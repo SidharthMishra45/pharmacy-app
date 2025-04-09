@@ -1,0 +1,13 @@
+<div *ngIf="drugs.length > 0; else noDrugs">
+    <div *ngFor="let drug of drugs" class="drug-item">
+      <h3>{{ drug.name }}</h3>
+      <p>{{ drug.description }}</p>
+      <p><strong>Price:</strong> ₹{{ drug.price }}</p>
+      <button (click)="addToCart(drug)">🛒 Buy Drug</button>
+    </div>
+  </div>
+  
+  <ng-template #noDrugs>
+    <p>No medicines available.</p>
+  </ng-template>
+  

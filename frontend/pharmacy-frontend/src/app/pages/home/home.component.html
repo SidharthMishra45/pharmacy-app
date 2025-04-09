@@ -1,0 +1,26 @@
+<app-navbar (searchPerformed)="onSearch($event)"></app-navbar>
+
+<main>
+  <section class="hero">
+    <h2>Your Trusted Online Medical Store</h2>
+    <p>Find & purchase medicines easily</p>
+  </section>
+
+  <section class="featured-medicines">
+    <h3>Featured Medicines</h3>
+    <app-drug-list [searchQuery]="searchQuery"></app-drug-list>
+  </section>
+
+  <section class="categories">
+    <h3>Shop by Category</h3>
+    <div class="category-list">
+      <button>Pain Relievers</button>
+      <button>Cold & Flu</button>
+      <button>Diabetes Care</button>
+      <button>Skin Care</button>
+      <button>Vitamins & Supplements</button>
+    </div>
+  </section>
+</main>
+
+<app-footer></app-footer> <!-- Use footer component -->

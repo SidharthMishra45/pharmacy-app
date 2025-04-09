@@ -1,0 +1,28 @@
+<!-- Search Bar -->
+<input type="text" [(ngModel)]="searchQuery" placeholder="Search for items..." />
+<button (click)="filterItems()">Search</button>
+
+<!-- Show empty cart message when filteredCartItems is empty -->
+<div *ngIf="filteredCartItems.length === 0">
+  <p *ngIf="cartItems.length === 0">Your cart is empty.</p>
+  <p *ngIf="cartItems.length > 0">No items match your search.</p>
+  <button (click)="goToHome()" class="btn btn-primary">Return to Search Products</button>
+</div>
+
+<!-- Show cart when there are items -->
+<div *ngIf="filteredCartItems.length > 0">
+  <div *ngFor="let item of filteredCartItems">
+    <p>
+      {{ item.name }} - ₹{{ item.price }} x {{ item.quantity }}
+      = ₹{{ item.price * item.quantity }}
+    </p>
+
+    <button (click)="decreaseQuantity(item.drugId)">➖</button>
+    <button (click)="increaseQuantity(item.drugId)">➕</button>
+    <button (click)="removeFromCart(item.drugId)">❌ Remove</button>
+  </div>
+
+  <p><strong>Total:</strong> ₹{{ totalAmount }}</p>
+  <button (click)="clearCart()">Clear Cart</button>
+  <button (click)="proceedToBuy()">Proceed to Buy</button>
+</div>

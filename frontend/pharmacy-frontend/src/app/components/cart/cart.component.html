@@ -1,0 +1,8 @@
+<div class="cart">
+    <h2>🛒 Your Cart</h2>
+    <div *ngFor="let item of cartItems">
+      <p>{{ item.name }} - {{ item.description }}</p>
+    </div>
+    <button (click)="proceedToBuy()">Proceed to Buy</button>
+  </div>
+  

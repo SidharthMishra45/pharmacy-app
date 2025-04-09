@@ -1,0 +1,51 @@
+<header class="signup-header">
+    <nav>
+      <h1>Sign Up</h1>
+      <button (click)="navigateHome()">🏠 Back to Home</button>
+    </nav>
+  </header>
+  
+  <main class="signup-container">
+    <section class="signup-box">
+      <h2>Create an Account</h2>
+      <form (submit)="onSignup()">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" [(ngModel)]="name" required />
+        </div>
+  
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" [(ngModel)]="email" required />
+        </div>
+  
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" [(ngModel)]="password" required />
+        </div>
+
+        <div class="form-group">
+          <label for="ConfirmPassword">Confirm Password</label>
+          <input type="password" id="ConfirmPassword" name="ConfirmPassword" [(ngModel)]="ConfirmPassword" required />
+        </div>
+        
+        <div class="form-group">
+          <label for="role">Role</label>
+          <select id="role" name="role" [(ngModel)]="role" required>
+            <option value="" disabled selected>Select role</option>
+            <option value="Admin">Admin</option>
+            <option value="Doctor">Doctor</option>
+            <option value="Supplier">Supplier</option>
+          </select>
+        </div>
+        
+  
+        <button type="submit">Sign Up</button>
+      </form>
+  
+      <p>Already have an account? <a routerLink="/login">Login here</a></p>
+    </section>
+  </main>
+  
+  <app-footer></app-footer>
+  
