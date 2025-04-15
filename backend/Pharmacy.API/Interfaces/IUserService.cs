@@ -1,7 +1,7 @@
-using Pharmacy.API.Models;
+using Pharmacy.API.Models.Dtos;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using Pharmacy.API.Models;
 public interface IUserService
 {
     Task<IEnumerable<UserDto>> GetAllUsersAsync();

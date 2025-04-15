@@ -1,0 +1,72 @@
+.new-orders-container {
+    padding: 1rem;
+    max-width: 900px;
+    margin: auto;
+  
+    h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+  
+    .order-card {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  
+      .order-header p {
+        margin: 0.2rem 0;
+      }
+  
+      .order-items {
+        margin-top: 1rem;
+  
+        table {
+          width: 100%;
+          border-collapse: collapse;
+  
+          th, td {
+            border: 1px solid #ccc;
+            padding: 0.5rem;
+            text-align: left;
+          }
+  
+          th {
+            background-color: #f7f7f7;
+          }
+        }
+      }
+  
+      .order-actions {
+        margin-top: 1rem;
+        display: flex;
+        gap: 1rem;
+  
+        button {
+          padding: 0.5rem 1rem;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          font-weight: 500;
+        }
+  
+        button:first-child {
+          background-color: #4caf50;
+          color: white;
+        }
+  
+        button:last-child {
+          background-color: #f44336;
+          color: white;
+        }
+      }
+    }
+  
+    .loading, .no-orders {
+      text-align: center;
+      font-size: 1.2rem;
+      margin-top: 2rem;
+    }
+  }
+  

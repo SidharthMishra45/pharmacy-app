@@ -23,7 +23,17 @@ export class LoginComponent {
         next: (res) => {
           this.authService.saveToken(res.token);
           alert('Login successful!');
-          this.router.navigate(['/']);
+  
+          const role = this.authService.getUserRole();
+          console.log('User role after login:', role);
+
+          if (role === 'Supplier') {
+            this.router.navigate(['/supplier/dashboard']);
+          } else if (role === 'Admin') {
+            this.router.navigate(['/admin/admin-dashboard']);
+          } else {
+            this.router.navigate(['/']); // default: Doctor/home
+          }
         },
         error: (err) => {
           console.error(err);

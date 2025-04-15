@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CartService } from '../../services/cart.service';
 import { Subscription } from 'rxjs';
-import { FormsModule } from '@angular/forms'; // 
+import { FormsModule } from '@angular/forms'; 
 import { Router } from '@angular/router';
 
 
@@ -72,6 +72,6 @@ export class CartComponent implements OnInit {
 
 
   proceedToBuy(): void {
-    alert('Redirecting to payment (to be implemented)');
+    this.router.navigate(['/order-confirmation']); 
   }
 }

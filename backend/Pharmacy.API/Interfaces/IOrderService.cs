@@ -1,14 +1,18 @@
 using Pharmacy.API.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using Pharmacy.API.DTOs;
 
 namespace Pharmacy.API.Services
 {
     public interface IOrderService
     {
-        Task<IEnumerable<Order>> GetAllOrdersAsync();
-        Task PlaceOrderAsync(Order order, Guid doctorId);
-        Task<IEnumerable<Order>> GetOrdersByDoctorAsync(Guid doctorId);
+        Task<OrderResponseDto> PlaceOrderAsync(PlaceOrderDto orderDto, Guid doctorId);
+        Task<IEnumerable<OrderResponseDto>> GetAllOrdersAsync();
+        Task<IEnumerable<OrderResponseDto>> GetOrdersByDoctorIdAsync(Guid doctorId);
+        Task<OrderResponseDto?> GetOrderByIdAsync(Guid orderId, Guid doctorId);
+
+        Task<IEnumerable<OrderResponseDto>> GetOrdersByStatusAsync(string status);
+
+        Task<bool> UpdateOrderStatusAsync(Guid orderId, string newStatus);
 
     }
 }

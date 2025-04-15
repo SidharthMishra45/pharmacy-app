@@ -23,6 +23,37 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/register`, data);
   }
   
+  getUserRole(): string | null {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+  
+    try {
+      const decodedToken = this.decodeToken(token);
+      const currentTime = Date.now() / 1000; // in seconds
+  
+      // Check if token is expired
+      if (decodedToken.exp < currentTime) {
+        this.logout(); // Automatically logout if token is expired
+        return null;
+      }
+  
+      console.log('Decoded token payload:', decodedToken);
+      return decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] || null;
+    } catch (e) {
+      console.error('Error decoding token:', e);
+      return null;
+    }
+  }
+  
+  private decodeToken(token: string): any {
+    const parts = token.split('.');
+    const payload = atob(parts[1]);
+    return JSON.parse(payload);
+  }
+  
+  
+  
+  
 
   saveToken(token: string): void {
     localStorage.setItem('token', token);

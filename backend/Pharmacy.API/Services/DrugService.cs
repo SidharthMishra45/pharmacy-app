@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Pharmacy.API.Data;
 using Pharmacy.API.Dtos;
 using Pharmacy.API.Models;
-using Pharmacy.API.Services; // Use this if IDrugService is in Services. Adjust if it's in Interfaces.
+using Pharmacy.API.Models.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,22 +73,37 @@ namespace Pharmacy.API.Services
             return drug == null ? null : MapToDto(drug);
         }
 
-        public async Task<DrugDto> AddDrugAsync(DrugDto drugDto)
+        public async Task<DrugDto> AddDrugAsync(CreateDrugDto createDrugDto)
         {
+            // Get or create category by name
+            var category = await _context.Categories
+                .FirstOrDefaultAsync(c => c.CategoryName.ToLower() == createDrugDto.CategoryName.ToLower());
+
+            if (category == null)
+            {
+                category = new Category
+                {
+                    CategoryId = Guid.NewGuid(),
+                    CategoryName = createDrugDto.CategoryName
+                };
+
+                _context.Categories.Add(category);
+                await _context.SaveChangesAsync();
+            }
+
             var drug = new Drug
             {
                 DrugId = Guid.NewGuid(),
-                Name = drugDto.Name,
-                Description = drugDto.Description,
-                Price = drugDto.Price,
-                CategoryId = drugDto.CategoryId
+                Name = createDrugDto.Name,
+                Description = createDrugDto.Description,
+                Price = createDrugDto.Price,
+                CategoryId = category.CategoryId
             };
 
             _context.Drugs.Add(drug);
             await _context.SaveChangesAsync();
 
-            drugDto.DrugId = drug.DrugId;
-            return drugDto;
+            return MapToDto(drug);
         }
 
         public async Task<bool> UpdateDrugAsync(Guid id, DrugDto drugDto)
@@ -96,10 +111,26 @@ namespace Pharmacy.API.Services
             var existingDrug = await _context.Drugs.FindAsync(id);
             if (existingDrug == null) return false;
 
+            // Get or create category
+            var category = await _context.Categories
+                .FirstOrDefaultAsync(c => c.CategoryName.ToLower() == drugDto.CategoryName.ToLower());
+
+            if (category == null)
+            {
+                category = new Category
+                {
+                    CategoryId = Guid.NewGuid(),
+                    CategoryName = drugDto.CategoryName
+                };
+
+                _context.Categories.Add(category);
+                await _context.SaveChangesAsync();
+            }
+
             existingDrug.Name = drugDto.Name;
             existingDrug.Description = drugDto.Description;
             existingDrug.Price = drugDto.Price;
-            existingDrug.CategoryId = drugDto.CategoryId;
+            existingDrug.CategoryId = category.CategoryId;
 
             await _context.SaveChangesAsync();
             return true;

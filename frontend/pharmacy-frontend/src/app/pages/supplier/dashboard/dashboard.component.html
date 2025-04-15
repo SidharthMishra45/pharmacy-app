@@ -1,0 +1,16 @@
+<div class="supplier-layout">
+    <aside class="sidebar">
+      <ul>
+        <li><a [routerLink]="['./inventory']" routerLinkActive="active">Inventory</a></li>
+        <li><a [routerLink]="['./drug-list']" routerLinkActive="active">Drug List</a></li>
+        <li><a [routerLink]="['./new-orders']" routerLinkActive="active">New Orders</a></li>
+        <li><a [routerLink]="['./picked-orders']" routerLinkActive="active">Picked Orders</a></li>
+        <li><a [routerLink]="['./sales-report']" routerLinkActive="active">Sales Report</a></li>
+      </ul>
+    </aside>
+  
+    <main class="main-view">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+  

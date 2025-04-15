@@ -1,0 +1,62 @@
+<div class="inventory-page">
+  <h2>My Inventory</h2>
+
+  <button (click)="toggleAddForm()" class="add-stock-btn">
+    {{ showAddForm ? 'Cancel' : 'Add Stock' }}
+  </button>
+
+  <!-- Add Inventory Form -->
+  <div *ngIf="showAddForm" class="add-form">
+    <h3>Add New Inventory</h3>
+    <form (ngSubmit)="addInventory()" #inventoryForm="ngForm">
+      <input type="text" [(ngModel)]="newInventory.drugName" name="drugName" placeholder="Drug Name" required />
+      <input type="number" [(ngModel)]="newInventory.quantity" name="quantity" placeholder="Quantity" required />
+      <input type="number" [(ngModel)]="newInventory.price" name="price" placeholder="Price (₹)" required />
+      <input type="date" [(ngModel)]="newInventory.expiryDate" name="expiryDate" required />
+      <button type="submit" [disabled]="inventoryForm.invalid">Submit</button>
+    </form>
+  </div>
+
+  <!-- Edit Inventory Form -->
+  <div *ngIf="editMode" class="edit-form">
+    <h3>Edit Inventory</h3>
+    <form (ngSubmit)="updateInventory()" #editForm="ngForm">
+      <input type="text" [(ngModel)]="editItem.drugName" name="editDrugName" placeholder="Drug Name" required />
+      <input type="number" [(ngModel)]="editItem.quantity" name="editQuantity" placeholder="Quantity" required />
+      <input type="number" [(ngModel)]="editItem.price" name="editPrice" placeholder="Price (₹)" required />
+      <input type="date" [(ngModel)]="editItem.expiryDate" name="editExpiryDate" required />
+      <button type="submit" [disabled]="editForm.invalid">Update</button>
+      <button type="button" (click)="cancelEdit()">Cancel</button>
+    </form>
+  </div>
+
+  <div *ngIf="loading">Loading inventory...</div>
+
+  <div *ngIf="!loading && inventories.length === 0">
+    No inventory found.
+  </div>
+
+  <table *ngIf="!loading && inventories.length > 0" class="inventory-table">
+    <thead>
+      <tr>
+        <th>Drug Name</th>
+        <th>Quantity</th>
+        <th>Price (₹)</th>
+        <th>Expiry Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of inventories">
+        <td>{{ item.drugName }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.price | number: '1.2-2' }}</td>
+        <td>{{ item.expiryDate | date: 'mediumDate' }}</td>
+        <td>
+          <button (click)="editInventory(item)">Edit</button>
+          <button (click)="deleteInventory(item.inventoryId!)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

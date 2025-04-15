@@ -31,9 +31,24 @@ export class ApiService {
     return this.http.delete<T>(`${this.apiUrl}/${endpoint}`);
   }
 
+  // Filtered search for drugs
   getFilteredDrugs(searchTerm: string = '', page: number = 1, pageSize: number = 10): Observable<any> {
     const url = `${this.apiUrl}/Drugs/filter?searchTerm=${searchTerm}&page=${page}&pageSize=${pageSize}`;
-    console.log('Calling API with URL:', url);  // 👈 Add this
     return this.http.get<any>(url);
+  }
+
+  // Add new drug
+  addDrug(drug: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/Drugs`, drug);
+  }
+
+  // Update existing drug
+  updateDrug(id: string, drug: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/Drugs/${id}`, drug);
+  }
+
+  // Delete drug
+  deleteDrug(id: string): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/Drugs/${id}`);
   }
 }

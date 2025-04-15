@@ -1,0 +1,54 @@
+<div class="manage-users-container">
+    <h2>Manage Users</h2>
+  
+    <!-- User Form -->
+    <div *ngIf="showForm" class="user-form">
+      <h3>{{ editMode ? 'Edit User' : 'Add New User' }}</h3>
+      <form (ngSubmit)="addOrUpdateUser()">
+        <div class="form-group">
+          <label for="userName">Name:</label>
+          <input id="userName" [(ngModel)]="newUser.name" name="name" required />
+        </div>
+        <div class="form-group">
+          <label for="userEmail">Email:</label>
+          <input id="userEmail" [(ngModel)]="newUser.email" name="email" required />
+        </div>
+        <div class="form-group">
+          <label for="userRole">Role:</label>
+          <select id="userRole" [(ngModel)]="newUser.role" name="role" required>
+            <option value="Doctor">Doctor</option>
+            <option value="Supplier">Supplier</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">{{ editMode ? 'Update' : 'Add' }} User</button>
+        <button type="button" class="btn btn-secondary" (click)="resetForm()">Cancel</button>
+      </form>
+    </div>
+  
+    <!-- User List -->
+    <div class="user-list">
+      <h3>Users</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.role }}</td>
+            <td>
+              <button class="btn btn-warning" (click)="editUser(user)">Edit</button>
+              <button class="btn btn-danger" (click)="deleteUser(user.userId)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

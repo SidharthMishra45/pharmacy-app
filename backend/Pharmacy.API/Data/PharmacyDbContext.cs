@@ -10,19 +10,22 @@ namespace Pharmacy.API.Data
     {
         public PharmacyDbContext(DbContextOptions<PharmacyDbContext> options) : base(options) { }
 
-        
         public DbSet<Drug> Drugs { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<TransactionDetail> TransactionDetails { get; set; }
         public DbSet<Category> Categories { get; set; }
+
+        public DbSet<Inventory> Inventories { get; set; }
+
         public PharmacyDbContext() { }
 
-       protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            
+            modelBuilder.Entity<Inventory>()
+                .Property(i => i.InventoryId)
+                .ValueGeneratedOnAdd();
             modelBuilder.Entity<Order>()
                 .HasMany(o => o.OrderItems)
                 .WithOne(oi => oi.Order)
@@ -30,6 +33,8 @@ namespace Pharmacy.API.Data
                 .OnDelete(DeleteBehavior.Cascade);
         }
 
-         
+        
+
     }
+
 }

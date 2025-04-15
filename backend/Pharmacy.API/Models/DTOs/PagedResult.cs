@@ -1,4 +1,4 @@
-namespace Pharmacy.API.Dtos
+namespace Pharmacy.API.Models.Dtos
 {
     public class PagedResult<T>
     {

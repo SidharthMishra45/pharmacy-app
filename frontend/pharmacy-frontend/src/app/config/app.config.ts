@@ -1,7 +1,9 @@
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
+import { AuthInterceptor } from '../interceptors/auth.interceptor';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 export interface AppConfig {
   apiUrl: string;
@@ -9,14 +11,21 @@ export interface AppConfig {
   version: string;
 }
 
-// The configuration values
 export const appConfig: AppConfig = {
-  apiUrl: 'http://localhost:5057/api', // Backend API URL
+  apiUrl: 'http://localhost:5057/api',
   appTitle: 'Pharmacy Management System',
   version: '1.0.0',
 };
 
-// Provide HTTP Client and Routing
 export const appProviders: ApplicationConfig = {
-  providers: [provideHttpClient(), provideRouter(routes)],
+  providers: [
+    provideHttpClient(withInterceptorsFromDi()), 
+    provideRouter(routes),
+
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    }
+  ],
 };

@@ -1,0 +1,18 @@
+<div class="orders-container">
+  <h2>New Orders</h2>
+  <div *ngIf="newOrders.length === 0">No new orders found.</div>
+
+  <div *ngFor="let order of newOrders" class="order-card">
+    <h4>Order #{{ order.orderId }}</h4>
+    <p>Total: ${{ order.totalAmount }}</p>
+    <p>Status: {{ order.status }}</p>
+    <ul>
+      <li *ngFor="let item of order.items">
+        {{ item.drugName }} - Qty: {{ item.quantity }} - Price: ${{ item.price }}
+      </li>
+    </ul>
+
+    <button (click)="acceptOrder(order.orderId)" class="btn-accept">Accept</button>
+    <button (click)="rejectOrder(order.orderId)" class="btn-reject">Reject</button>
+  </div>
+</div>

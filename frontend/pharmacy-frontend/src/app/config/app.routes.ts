@@ -1,18 +1,115 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from '../pages/home/home.component';
-import { CartComponent } from '../pages/cart/cart.component';
-import { LoginComponent } from '../pages/auth/login/login.component';
-import { SignupComponent } from '../pages/auth/signup/signup.component';
-import { PaymentComponent } from '../pages/payment/payment.component';
-import { OrdersComponent } from '../pages/orders/orders.component';
-import { AdminComponent } from '../pages/admin/admin.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'cart', component: CartComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'signup', component: SignupComponent },
-  { path: 'payment', component: PaymentComponent },
-  { path: 'orders', component: OrdersComponent },
-  { path: 'admin', component: AdminComponent },
+  {
+    path: '',
+    loadComponent: () =>
+      import('../pages/home/home.component').then((m) => m.HomeComponent),
+  },
+  {
+    path: 'cart',
+    loadComponent: () =>
+      import('../pages/cart/cart.component').then((m) => m.CartComponent),
+  },
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('../pages/auth/login/login.component').then((m) => m.LoginComponent),
+  },
+  {
+    path: 'signup',
+    loadComponent: () =>
+      import('../pages/auth/signup/signup.component').then((m) => m.SignupComponent),
+  },
+  {
+    path: 'payment',
+    loadComponent: () =>
+      import('../pages/payment/payment.component').then((m) => m.PaymentComponent),
+  },
+  {
+    path: 'order-confirmation',
+    loadComponent: () =>
+      import('../pages/order-confirmation/order-confirmation.component').then((m) => m.OrderConfirmationComponent),
+  },
+  {
+    path: 'orders',
+    loadComponent: () =>
+      import('../pages/orders/orders.component').then((m) => m.OrdersComponent),
+  },
+  {
+    path: 'admin/admin-dashboard',
+    loadComponent: () =>
+      import('../pages/admin/admin-dashboard/admin-dashboard.component').then((m) => m.AdminDashboardComponent),
+    children: [
+      {
+        path: '',
+        redirectTo: 'manage-drugs',
+        pathMatch: 'full',
+      },
+      {
+        path: 'manage-drugs',
+        loadComponent: () =>
+          import('../pages/admin/manage-drugs/manage-drugs.component').then((m) => m.ManageDrugsComponent),
+      },
+      {
+        path: 'manage-orders',
+        loadComponent: () =>
+          import('../pages/admin/manage-orders/manage-orders.component').then((m) => m.ManageOrdersComponent),
+      },
+      {
+        path: 'manage-users',
+        loadComponent: () =>
+          import('../pages/admin/manage-users/manage-users.component').then((m) => m.ManageUsersComponent),
+      },
+      {
+        path: 'reports/inventory-report',
+        loadComponent: () =>
+          import('../pages/admin/reports/inventory-report/inventory-report.component').then((m) => m.InventoryReportComponent),
+      },
+      {
+        path: 'reports/sales-report',
+        loadComponent: () =>
+          import('../pages/admin/reports/sales-report/sales-report.component').then((m) => m.SalesReportComponent),
+      },
+    
+    ]
+  },
+  {
+    path: 'supplier/dashboard',
+    loadComponent: () =>
+      import('../pages/supplier/dashboard/dashboard.component').then((m) => m.DashboardComponent),
+    children: [
+      {
+        path: '',
+        redirectTo: 'inventory',
+        pathMatch: 'full',
+      },
+      {
+        path: 'inventory',
+        loadComponent: () =>
+          import('../pages/supplier/inventory/inventory.component').then((m) => m.InventoryComponent),
+      },
+      {
+        path: 'drug-list',
+        loadComponent: () =>
+          import('../pages/supplier/drug-list/drug-list.component').then((m) => m.DrugListComponent),
+      },
+      {
+        path: 'new-orders',
+        loadComponent: () =>
+          import('../pages/supplier/new-orders/new-orders.component').then((m) => m.NewOrdersComponent),
+      },
+      {
+        path: 'picked-orders',
+        loadComponent: () =>
+          import('../pages/supplier/picked-orders/picked-orders.component').then((m) => m.PickedOrdersComponent),
+      },
+      {
+        path: 'sales-report',
+        loadComponent: () =>
+          import('../pages/supplier/sales-report/sales-report.component').then((m) => m.SalesReportComponent),
+      },
+      
+    ],
+  },
 ];

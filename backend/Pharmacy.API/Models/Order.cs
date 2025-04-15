@@ -10,9 +10,12 @@ namespace Pharmacy.API.Models
         public Guid OrderId { get; set; }
 
         [Required]
+
         public Guid DoctorId { get; set; }
 
         [ForeignKey("DoctorId")]
+
+
         public ApplicationUser Doctor { get; set; } 
 
         [Required]
@@ -23,10 +26,10 @@ namespace Pharmacy.API.Models
 
         public decimal TotalAmount { get; set; }
         
-        public Guid TransactionId { get; set; }
+        public Guid? TransactionId { get; set; } 
         
         [ForeignKey("TransactionId")]
-        public TransactionDetail TransactionDetail { get; set; }
+        public TransactionDetail? TransactionDetail { get; set; }
 
         public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }

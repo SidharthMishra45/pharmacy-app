@@ -18,4 +18,32 @@ public class CategoryService : ICategoryService
     {
         return await _context.Categories.ToListAsync();
     }
+    public async Task<Category> CreateCategoryAsync(Category category)
+    {
+        category.CategoryId = Guid.NewGuid();
+        _context.Categories.Add(category);
+        await _context.SaveChangesAsync();
+        return category;
+    }
+
+    public async Task<bool> UpdateCategoryAsync(Guid id, Category category)
+    {
+        var existingCategory = await _context.Categories.FindAsync(id);
+        if (existingCategory == null) return false;
+
+        existingCategory.CategoryName = category.CategoryName;
+
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> DeleteCategoryAsync(Guid id)
+    {
+        var category = await _context.Categories.FindAsync(id);
+        if (category == null) return false;
+
+         _context.Categories.Remove(category);
+         await _context.SaveChangesAsync();
+        return true;
+    }
 }

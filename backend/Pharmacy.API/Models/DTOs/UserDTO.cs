@@ -1,4 +1,4 @@
-namespace Pharmacy.API.Models
+namespace Pharmacy.API.Models.Dtos
 {
     public class UserDto
     {

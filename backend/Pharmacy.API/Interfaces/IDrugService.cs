@@ -1,4 +1,5 @@
 using Pharmacy.API.Dtos;
+using Pharmacy.API.Models.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace Pharmacy.API.Services
             Guid? categoryId = null
         );
         Task<DrugDto> GetDrugByIdAsync(Guid id);
-        Task<DrugDto> AddDrugAsync(DrugDto drugDto);
+        Task<DrugDto> AddDrugAsync(CreateDrugDto createDrugDto);
         Task<bool> UpdateDrugAsync(Guid id, DrugDto drugDto);
         Task<bool> DeleteDrugAsync(Guid id);
     }

@@ -1,0 +1,36 @@
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+  
+    .sidebar {
+      width: 220px;
+      background-color: #f4f4f4;
+      padding: 1rem;
+  
+      ul {
+        list-style: none;
+        padding: 0;
+  
+        li {
+          margin-bottom: 1rem;
+  
+          a {
+            text-decoration: none;
+            color: #333;
+  
+            &.active {
+              font-weight: bold;
+              color: #007bff;
+            }
+          }
+        }
+      }
+    }
+  
+    .main-view {
+      flex-grow: 1;
+      padding: 2rem;
+      background-color: #fff;
+    }
+  }
+  

@@ -1,0 +1,22 @@
+<div class="admin-layout">
+    <aside class="sidebar">
+      <ul>
+        <li>
+          <a [routerLink]="['./manage-drugs']" routerLinkActive="active">Manage Drugs</a>
+        </li>
+        <li>
+          <a [routerLink]="['./manage-orders']" routerLinkActive="active">Manage Orders</a>
+        </li>
+        <li>
+          <a [routerLink]="['./manage-users']" routerLinkActive="active">Manage Users</a>
+        </li>
+        <li><a [routerLink]="['./reports/inventory-report']" routerLinkActive="active">Inventory Report</a></li>
+    <li><a [routerLink]="['./reports/sales-report']" routerLinkActive="active">Sales Report</a></li>
+      </ul>
+    </aside>
+  
+    <main class="main-view">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+  

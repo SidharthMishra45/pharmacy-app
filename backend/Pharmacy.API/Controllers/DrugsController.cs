@@ -5,6 +5,7 @@ using Pharmacy.API.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Pharmacy.API.Dtos;
+using Pharmacy.API.Models.Dtos;
 
 
 namespace Pharmacy.API.Controllers
@@ -51,9 +52,9 @@ namespace Pharmacy.API.Controllers
 
         [Authorize(Policy = "CanManageDrugs")]
         [HttpPost]
-        public async Task<IActionResult> AddDrug([FromBody] DrugDto drugDto)
+        public async Task<IActionResult> AddDrug([FromBody] CreateDrugDto createDrugDto)
         {
-            var createdDrug = await _drugService.AddDrugAsync(drugDto);
+            var createdDrug = await _drugService.AddDrugAsync(createDrugDto);
             return CreatedAtAction(nameof(GetDrug), new { id = createdDrug.DrugId }, createdDrug);
         }
 

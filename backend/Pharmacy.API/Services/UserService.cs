@@ -1,5 +1,6 @@
 // File: Services/UserService.cs
 using Pharmacy.API.Models;
+using Pharmacy.API.Models.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

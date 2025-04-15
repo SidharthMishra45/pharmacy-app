@@ -262,17 +262,43 @@ namespace Pharmacy.API.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Stock")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("SupplierId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("DrugId");
 
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Drugs");
+                });
+
+            modelBuilder.Entity("Pharmacy.API.Models.Inventory", b =>
+                {
+                    b.Property<Guid>("InventoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ApplicationUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("DrugName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("SupplierId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("InventoryId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("Inventories");
                 });
 
             modelBuilder.Entity("Pharmacy.API.Models.Order", b =>
@@ -294,7 +320,7 @@ namespace Pharmacy.API.Migrations
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("TransactionId")
+                    b.Property<Guid?>("TransactionId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("OrderId");
@@ -417,19 +443,24 @@ namespace Pharmacy.API.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("Pharmacy.API.Models.Inventory", b =>
+                {
+                    b.HasOne("Pharmacy.API.Models.ApplicationUser", null)
+                        .WithMany("Inventories")
+                        .HasForeignKey("ApplicationUserId");
+                });
+
             modelBuilder.Entity("Pharmacy.API.Models.Order", b =>
                 {
                     b.HasOne("Pharmacy.API.Models.ApplicationUser", "Doctor")
-                        .WithMany()
+                        .WithMany("Orders")
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Pharmacy.API.Models.TransactionDetail", "TransactionDetail")
                         .WithMany()
-                        .HasForeignKey("TransactionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TransactionId");
 
                     b.Navigation("Doctor");
 
@@ -453,6 +484,13 @@ namespace Pharmacy.API.Migrations
                     b.Navigation("Drug");
 
                     b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("Pharmacy.API.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("Inventories");
+
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("Pharmacy.API.Models.Order", b =>
