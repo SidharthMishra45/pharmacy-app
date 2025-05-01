@@ -27,6 +27,14 @@ namespace Pharmacy.API.Controllers
             return Ok(users);
         }
 
+        [HttpGet("getsuppliers")]
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetAllSuppliers()
+        {
+            var suppliers = await _userService.GetAllSuppliersAsync(); // Implement this service method if needed
+            return Ok(suppliers);
+        }
+
+
         // GET: api/Users/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<ApplicationUser>> GetUserById(Guid id)

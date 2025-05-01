@@ -1,1 +1,15 @@
-<p>picked-orders works!</p>
+<div class="orders-container">
+    <h2>Picked Orders</h2>
+    <div *ngIf="pickedOrders.length === 0">No picked orders yet.</div>
+  
+    <div *ngFor="let order of pickedOrders" class="order-card">
+      <h4>Order #{{ order.orderId }}</h4>
+      <p>Total: ${{ order.totalAmount }}</p>
+      <ul>
+        <li *ngFor="let item of order.items">
+          {{ item.drugName }} - Qty: {{ item.quantity }} - Price: ${{ item.price }}
+        </li>
+      </ul>
+    </div>
+  </div>
+  

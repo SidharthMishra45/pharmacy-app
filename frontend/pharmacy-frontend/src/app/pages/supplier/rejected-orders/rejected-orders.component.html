@@ -1,1 +1,15 @@
-<p>rejected-orders works!</p>
+<div class="orders-container">
+    <h2>Rejected Orders</h2>
+    <div *ngIf="rejectedOrders.length === 0">No rejected orders yet.</div>
+  
+    <div *ngFor="let order of rejectedOrders" class="order-card">
+      <h4>Order #{{ order.orderId }}</h4>
+      <p>Total: ${{ order.totalAmount }}</p>
+      <ul>
+        <li *ngFor="let item of order.items">
+          {{ item.drugName }} - Qty: {{ item.quantity }} - Price: ${{ item.price }}
+        </li>
+      </ul>
+    </div>
+  </div>
+  

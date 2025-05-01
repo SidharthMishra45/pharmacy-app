@@ -1,1 +1,38 @@
-/* You can add global styles to this file, and also import other style files */
+// Custom Bootstrap Variables
+$primary: #006d6d; // Teal color for primary theme
+$secondary: #004d4d; // Darker teal for secondary color
+$success: #28a745; // Green for success messages
+$info: #17a2b8; // Light teal for information
+$warning: #ffc107; // Yellow for warnings
+$danger: #dc3545; // Red for error messages
+$light: #f8f9fa; // Light background color
+$dark: #343a40; // Dark text color
+
+// Customize font sizes and other typography properties
+$font-size-base: 1rem; // Base font size
+$font-family-sans-serif: "Helvetica Neue", Arial, sans-serif; // Sans-serif font for a modern feel
+
+// Customizing buttons
+$btn-primary-bg: $primary;
+$btn-primary-border: $primary;
+$btn-secondary-bg: $secondary;
+$btn-secondary-border: $secondary;
+
+// Navbar Customization
+$navbar-dark-bg: $primary;
+$navbar-dark-color: white;
+$navbar-light-bg: $light;
+$navbar-light-color: $dark;
+
+// Customize card styles for a cleaner, medical look
+$card-border-radius: 0.375rem;
+$card-border-color: $light;
+$card-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+// Form customization to make it cleaner and lighter
+$form-control-border-color: $light;
+$form-control-focus-border-color: $primary;
+
+// Import Bootstrap SCSS
+// Use the correct import path using the @use rule
+@use 'bootstrap' as *;

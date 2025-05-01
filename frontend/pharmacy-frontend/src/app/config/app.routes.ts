@@ -31,6 +31,11 @@ export const routes: Routes = [
     loadComponent: () =>
       import('../pages/order-confirmation/order-confirmation.component').then((m) => m.OrderConfirmationComponent),
   },
+  { 
+    path: 'orders/:id', 
+    loadComponent: () =>
+      import('../pages/order-details/order-details.component').then((m) => m.OrderDetailsComponent),
+  },
   {
     path: 'orders',
     loadComponent: () =>
@@ -60,6 +65,11 @@ export const routes: Routes = [
         path: 'manage-users',
         loadComponent: () =>
           import('../pages/admin/manage-users/manage-users.component').then((m) => m.ManageUsersComponent),
+      },
+      {
+        path: 'manage-categories',
+        loadComponent: () =>
+          import('../pages/admin/manage-categories/manage-categories.component').then((m) => m.ManageCategoriesComponent),
       },
       {
         path: 'reports/inventory-report',
@@ -103,6 +113,11 @@ export const routes: Routes = [
         path: 'picked-orders',
         loadComponent: () =>
           import('../pages/supplier/picked-orders/picked-orders.component').then((m) => m.PickedOrdersComponent),
+      },
+      {
+        path: 'rejected-orders',
+        loadComponent: () =>
+          import('../pages/supplier/rejected-orders/rejected-orders.component').then((m) => m.RejectedOrdersComponent),
       },
       {
         path: 'sales-report',

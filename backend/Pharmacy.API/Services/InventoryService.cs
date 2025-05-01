@@ -21,6 +21,26 @@ namespace Pharmacy.API.Services
             _mapper = mapper;
         }
 
+        public async Task<IEnumerable<InventoryReadDto>> GetAllInventoriesForAdminAsync()
+        {
+            var inventories = await _context.Inventories
+                .Include(i => i.Supplier) // assuming Inventory has a navigation property `Supplier`
+                .ToListAsync();
+
+            var inventoryDtos = inventories.Select(i => new InventoryReadDto
+            {
+                InventoryId = i.InventoryId,
+                DrugName = i.DrugName,
+                Quantity = i.Quantity,
+                Price = i.Price,
+                ExpiryDate = i.ExpiryDate,
+                SupplierId = i.SupplierId,
+                SupplierName = i.Supplier != null ? i.Supplier.Name : "Unknown"
+            });
+
+            return inventoryDtos;
+        }
+
         public async Task<IEnumerable<InventoryReadDto>> GetInventoriesAsync(Guid supplierId)
         {
             var inventories = await _context.Inventories

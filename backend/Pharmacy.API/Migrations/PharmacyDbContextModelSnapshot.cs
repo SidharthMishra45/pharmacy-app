@@ -275,9 +275,6 @@ namespace Pharmacy.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ApplicationUserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("DrugName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -296,7 +293,7 @@ namespace Pharmacy.API.Migrations
 
                     b.HasKey("InventoryId");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("SupplierId");
 
                     b.ToTable("Inventories");
                 });
@@ -317,6 +314,9 @@ namespace Pharmacy.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("SupplierId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(18,2)");
 
@@ -326,6 +326,8 @@ namespace Pharmacy.API.Migrations
                     b.HasKey("OrderId");
 
                     b.HasIndex("DoctorId");
+
+                    b.HasIndex("SupplierId");
 
                     b.HasIndex("TransactionId");
 
@@ -445,24 +447,35 @@ namespace Pharmacy.API.Migrations
 
             modelBuilder.Entity("Pharmacy.API.Models.Inventory", b =>
                 {
-                    b.HasOne("Pharmacy.API.Models.ApplicationUser", null)
+                    b.HasOne("Pharmacy.API.Models.ApplicationUser", "Supplier")
                         .WithMany("Inventories")
-                        .HasForeignKey("ApplicationUserId");
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Supplier");
                 });
 
             modelBuilder.Entity("Pharmacy.API.Models.Order", b =>
                 {
                     b.HasOne("Pharmacy.API.Models.ApplicationUser", "Doctor")
-                        .WithMany("Orders")
+                        .WithMany()
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Pharmacy.API.Models.ApplicationUser", "Supplier")
+                        .WithMany("Orders")
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Pharmacy.API.Models.TransactionDetail", "TransactionDetail")
                         .WithMany()
                         .HasForeignKey("TransactionId");
 
                     b.Navigation("Doctor");
+
+                    b.Navigation("Supplier");
 
                     b.Navigation("TransactionDetail");
                 });

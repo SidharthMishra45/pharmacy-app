@@ -33,6 +33,20 @@ namespace Pharmacy.API.Services
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<UserDto>> GetAllSuppliersAsync()
+        {
+            // Assuming the 'Role' field in ApplicationUser identifies if a user is a supplier
+            return await _context.Users
+                .Where(user => user.Role == "Supplier")  // Adjust the role filter as necessary
+                .Select(user => new UserDto
+                {
+                    UserId = user.Id,
+                    Name = user.Name,
+                    Role = user.Role
+                })
+                .ToListAsync();
+        }
+
 
         public async Task<ApplicationUser?> GetUserByIdAsync(Guid id)
         {

@@ -1,1 +1,87 @@
-<p>manage-orders works!</p>
+<div class="orders-container">
+  <div class="header-section">
+    <h2><i class="fas fa-clipboard-list"></i> Manage Orders</h2>
+    <div class="refresh-btn" (click)="fetchOrders()">
+      <i class="fas fa-sync-alt"></i> Refresh
+    </div>
+  </div>
+
+  <div class="filter-section">
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" [(ngModel)]="searchQuery" (input)="applyFilters()" 
+             placeholder="Search by drug name or order ID..." />
+    </div>
+
+    <div class="filter-controls">
+      <div class="filter-dropdown">
+        <select [(ngModel)]="selectedStatusFilter" (change)="applyFilters()">
+          <option value="All">All Status</option>
+          <option value="Pending">Pending</option>
+          <option value="Accepted">Accepted</option>
+          <option value="Rejected">Rejected</option>
+          <option value="PickedUp">Picked Up</option>
+        </select>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+
+      <div class="sort-buttons">
+        <button (click)="sortOrders('latest')" class="btn-sort">
+          <i class="fas fa-arrow-down"></i> Latest
+        </button>
+        <button (click)="sortOrders('oldest')" class="btn-sort">
+          <i class="fas fa-arrow-up"></i> Oldest
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading orders...</p>
+  </div>
+
+  <div *ngIf="!isLoading && filteredOrders.length === 0" class="empty-state">
+    <i class="fas fa-box-open"></i>
+    <p>No orders found matching your criteria</p>
+  </div>
+
+  <div class="orders-list">
+    <div *ngFor="let order of filteredOrders" class="order-card" [ngClass]="'status-' + order.status.toLowerCase()">
+      <div class="order-header">
+        <div class="order-id">
+          <h3>Order #{{ order.orderId }}</h3>
+          <span class="order-date">{{ order.orderDate | date:'medium' }}</span>
+        </div>
+        <div class="order-status">
+          <span class="status-badge">{{ order.status }}</span>
+          <span class="order-total">${{ order.totalAmount | number:'1.2-2' }}</span>
+        </div>
+      </div>
+
+      <div class="order-items">
+        <h4><i class="fas fa-pills"></i> Items</h4>
+        <ul>
+          <li *ngFor="let item of order.items">
+            <span class="drug-name">{{ item.drugName }}</span>
+            <span class="item-details">Qty: {{ item.quantity }} × ${{ item.price | number:'1.2-2' }}</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="order-footer">
+        <div class="admin-actions">
+          <button (click)="updateOrderStatus(order.orderId, 'Accepted')" class="btn-accept" *ngIf="order.status !== 'Accepted'">
+            <i class="fas fa-check-circle"></i> Accept
+          </button>
+          <button (click)="updateOrderStatus(order.orderId, 'Rejected')" class="btn-reject" *ngIf="order.status !== 'Rejected'">
+            <i class="fas fa-times-circle"></i> Reject
+          </button>
+          <button (click)="updateOrderStatus(order.orderId, 'PickedUp')" class="btn-complete" *ngIf="order.status === 'Accepted'">
+            <i class="fas fa-check-double"></i> Mark as Picked Up
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

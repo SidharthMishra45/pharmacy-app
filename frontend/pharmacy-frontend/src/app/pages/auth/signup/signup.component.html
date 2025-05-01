@@ -1,51 +1,54 @@
-<header class="signup-header">
-    <nav>
-      <h1>Sign Up</h1>
-      <button (click)="navigateHome()">🏠 Back to Home</button>
-    </nav>
-  </header>
-  
-  <main class="signup-container">
-    <section class="signup-box">
-      <h2>Create an Account</h2>
-      <form (submit)="onSignup()">
-        <div class="form-group">
-          <label for="name">Full Name</label>
-          <input type="text" id="name" name="name" [(ngModel)]="name" required />
-        </div>
-  
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" [(ngModel)]="email" required />
-        </div>
-  
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" [(ngModel)]="password" required />
-        </div>
+<header class="bg-primary text-white p-3">
+  <div class="container d-flex justify-content-between align-items-center">
+    <h1 class="h3 mb-0">Sign Up</h1>
+    <button class="btn btn-light" (click)="navigateHome()">🏠 Back to Home</button>
+  </div>
+</header>
 
-        <div class="form-group">
-          <label for="ConfirmPassword">Confirm Password</label>
-          <input type="password" id="ConfirmPassword" name="ConfirmPassword" [(ngModel)]="ConfirmPassword" required />
-        </div>
-        
-        <div class="form-group">
-          <label for="role">Role</label>
-          <select id="role" name="role" [(ngModel)]="role" required>
-            <option value="" disabled selected>Select role</option>
-            <option value="Admin">Admin</option>
-            <option value="Doctor">Doctor</option>
-            <option value="Supplier">Supplier</option>
-          </select>
-        </div>
-        
-  
-        <button type="submit">Sign Up</button>
-      </form>
-  
-      <p>Already have an account? <a routerLink="/login">Login here</a></p>
-    </section>
-  </main>
-  
-  <app-footer></app-footer>
-  
+<main class="container my-5">
+  <section class="card p-4 shadow-sm mx-auto" style="max-width: 500px;">
+    <h2 class="mb-4 text-center">Create an Account</h2>
+    
+    <form (submit)="onSignup()">
+      <div class="mb-3">
+        <label for="name" class="form-label">Full Name</label>
+        <input type="text" id="name" name="name" [(ngModel)]="name" required class="form-control" />
+      </div>
+
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" id="email" name="email" [(ngModel)]="email" required class="form-control" />
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" name="password" [(ngModel)]="password" required class="form-control" />
+      </div>
+
+      <div class="mb-3">
+        <label for="ConfirmPassword" class="form-label">Confirm Password</label>
+        <input type="password" id="ConfirmPassword" name="ConfirmPassword" [(ngModel)]="ConfirmPassword" required class="form-control" />
+      </div>
+
+      <div class="mb-4">
+        <label for="role" class="form-label">Role</label>
+        <select id="role" name="role" [(ngModel)]="role" required class="form-select">
+          <option value="" disabled selected>Select role</option>
+          <option value="Doctor">Doctor</option>
+          <option value="Supplier">Supplier</option>
+          <option value="Admin">Admin</option>
+
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+    </form>
+
+    <p class="text-center mt-3">
+      Already have an account? 
+      <a routerLink="/login" class="text-decoration-none">Login here</a>
+    </p>
+  </section>
+</main>
+
+<app-footer></app-footer>

@@ -39,7 +39,7 @@ namespace Pharmacy.API.Services
             {
                 query = query.Where(d =>
                     EF.Functions.Like(d.Name, $"%{searchTerm}%") ||
-                    (d.Description != null && EF.Functions.Like(d.Description, $"%{searchTerm}%")));
+                    (d.Category != null && EF.Functions.Like(d.Category.CategoryName, $"%{searchTerm}%")));
             }
 
             if (categoryId.HasValue)
@@ -102,6 +102,10 @@ namespace Pharmacy.API.Services
 
             _context.Drugs.Add(drug);
             await _context.SaveChangesAsync();
+
+            var createdDrug = await _context.Drugs
+                .Include(d => d.Category)
+                .FirstOrDefaultAsync(d => d.DrugId == drug.DrugId);
 
             return MapToDto(drug);
         }

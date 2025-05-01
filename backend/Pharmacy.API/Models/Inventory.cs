@@ -24,5 +24,8 @@ namespace Pharmacy.API.Models
         [Required]
         public Guid SupplierId { get; set; }
 
+        [ForeignKey("SupplierId")]
+        public ApplicationUser Supplier { get; set; }
+
     }
 }

@@ -1,73 +1,117 @@
-main {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    padding: 2rem;
-    background-color: #f9f9f9;
+// Color variables
+$teal-100: #e6f7f7;
+$teal-200: #b3e6e6;
+$teal-300: #80d4d4;
+$teal-400: #4dc3c3;
+$teal-500: #1ab2b2; // Primary teal
+$teal-600: #149999;
+$teal-700: #0e7f7f;
+$teal-800: #096666;
+$teal-900: #034c4c;
+
+// Theme colors
+.text-teal {
+  color: $teal-500;
+}
+
+.bg-teal {
+  background-color: $teal-500;
+}
+
+.btn-teal {
+  background-color: $teal-500;
+  color: white;
+  border-color: $teal-600;
+  
+  &:hover, &:focus {
+    background-color: $teal-600;
+    color: white;
+  }
+}
+
+// Hero Section
+.hero-banner {
+  background: 
+    linear-gradient(135deg, $teal-600 0%, $teal-800 100%),
+    url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHBhdGggZmlsbD0iIzAwMCIgZmlsbC1vcGFjaXR5PSIwLjEiIGQ9Ik0wIDBoNTB2NTBIMHpNNTAgNTBoNTB2NTBINTB6Ii8+PC9zdmc+');
+}
+
+// Section Styling
+.section-title {
+  position: relative;
+  padding-bottom: 10px;
+  color: $teal-700;
+  font-weight: 600;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background-color: $teal-400;
+  }
+}
+
+// Category Buttons
+.btn-category {
+  background-color: white;
+  border: 1px solid $teal-200;
+  color: $teal-700;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  
+  &:hover {
+    background-color: $teal-100;
+    border-color: $teal-300;
+    transform: translateY(-2px);
   }
   
-  .hero {
-    text-align: center;
-    background: linear-gradient(to right, #e0f7fa, #ffffff);
-    padding: 3rem 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  &.active {
+    background-color: $teal-500;
+    color: white;
+    border-color: $teal-500;
+  }
+}
+
+// Trust Section
+.trust-section {
+  background-color: $teal-100;
   
-    h2 {
-      font-size: 2rem;
-      color: #00796b;
-      margin-bottom: 0.5rem;
-    }
-  
-    p {
-      font-size: 1.2rem;
-      color: #555;
+  .trust-card {
+    background-color: white;
+    transition: transform 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     }
   }
   
-  .featured-medicines {
-    background: #ffffff;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  
-    h3 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-      color: #333;
+  .trust-icon {
+    font-size: 2.5rem;
+    background-color: $teal-100;
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .hero-banner {
+    padding: 3rem 0;
+    
+    h1 {
+      font-size: 2.2rem;
     }
   }
   
-  .categories {
-    background: #ffffff;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  
-    h3 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-      color: #333;
-    }
-  
-    .category-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-  
-      button {
-        background-color: #00796b;
-        color: #fff;
-        border: none;
-        padding: 0.75rem 1.5rem;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background-color 0.2s ease-in-out;
-  
-        &:hover {
-          background-color: #004d40;
-        }
-      }
-    }
+  .btn-category {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
   }
-  
+}

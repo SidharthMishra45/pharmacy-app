@@ -31,6 +31,10 @@ export class ApiService {
     return this.http.delete<T>(`${this.apiUrl}/${endpoint}`);
   }
 
+  getDrugs(): Observable<any[]> {
+    return this.http.get<any[]>('/api/drugs');
+  }
+
   // Filtered search for drugs
   getFilteredDrugs(searchTerm: string = '', page: number = 1, pageSize: number = 10): Observable<any> {
     const url = `${this.apiUrl}/Drugs/filter?searchTerm=${searchTerm}&page=${page}&pageSize=${pageSize}`;

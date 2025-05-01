@@ -7,11 +7,11 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Pharmacy.API.Models;
+
 namespace Pharmacy.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = UserRoles.Doctor)]
     public class OrderController : ControllerBase
     {
         private readonly IOrderService _orderService;
@@ -39,7 +39,6 @@ namespace Pharmacy.API.Controllers
             return Ok(orders);
         }
 
-
         // GET: api/Order
         [HttpGet("my-orders")]
         public async Task<ActionResult<IEnumerable<OrderResponseDto>>> GetMyOrders()
@@ -62,17 +61,18 @@ namespace Pharmacy.API.Controllers
             return Ok(order);
         }
 
+        // PUT: api/Order/{orderId}/status
         [HttpPut("{orderId}/status")]
         [Authorize(Roles = UserRoles.Supplier)]
-        public async Task<IActionResult> UpdateOrderStatus(Guid orderId, [FromQuery] string status)
+        public async Task<IActionResult> UpdateOrderStatus(Guid orderId, [FromQuery] string status, [FromQuery] Guid? supplierId = null)
         {
-            var success = await _orderService.UpdateOrderStatusAsync(orderId, status);
+            // Pass supplierId when status is "Accepted"
+            var success = await _orderService.UpdateOrderStatusAsync(orderId, status, supplierId);
             if (!success)
                 return NotFound("Order not found or could not update.");
 
             return NoContent();
         }
-
 
         // GET: api/order/status?status=Pending
         [HttpGet("status")]
@@ -82,9 +82,6 @@ namespace Pharmacy.API.Controllers
             var orders = await _orderService.GetOrdersByStatusAsync(status);
             return Ok(orders);
         }
-
-
-        
 
         // Utility to extract the logged-in user's Guid ID from JWT token
         private Guid GetLoggedInUserId()

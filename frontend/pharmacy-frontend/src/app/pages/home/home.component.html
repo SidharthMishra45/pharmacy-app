@@ -1,26 +1,89 @@
 <app-navbar (searchPerformed)="onSearch($event)"></app-navbar>
 
-<main>
-  <section class="hero">
-    <h2>Your Trusted Online Medical Store</h2>
-    <p>Find & purchase medicines easily</p>
-  </section>
-
-  <section class="featured-medicines">
-    <h3>Featured Medicines</h3>
-    <app-drug-list [searchQuery]="searchQuery"></app-drug-list>
-  </section>
-
-  <section class="categories">
-    <h3>Shop by Category</h3>
-    <div class="category-list">
-      <button>Pain Relievers</button>
-      <button>Cold & Flu</button>
-      <button>Diabetes Care</button>
-      <button>Skin Care</button>
-      <button>Vitamins & Supplements</button>
+<main class="container-fluid px-0">
+  <!-- Hero Section -->
+  <section class="hero-banner py-5 mb-5">
+    <div class="container text-center py-4">
+      <h1 class="display-4 fw-bold text-white mb-3">Your Trusted Online Medical Store</h1>
+      <p class="lead text-white-80 mb-4">Find & purchase medicines with confidence</p>
+      <div class="search-container mx-auto" style="max-width: 600px;">
+        <div class="input-group shadow-lg">
+          <input 
+            type="text" 
+            class="form-control form-control-lg border-0" 
+            placeholder="Search medicines, categories..."
+            (keyup.enter)="onSearch(searchInputValue)"
+            [(ngModel)]="searchInputValue"
+            #searchInput
+          >
+          <button class="btn btn-teal text-white" type="button" (click)="onSearch(searchInputValue)">
+            <i class="bi bi-search me-1"></i> Search
+          </button>
+        </div>
+      </div>
     </div>
   </section>
+
+  <div class="container pb-5">
+    <!-- Shop by Category -->
+    <section class="mb-5">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="section-title m-0">
+          <i class="bi bi-tags-fill me-2 text-teal"></i>Shop by Category
+        </h2>
+        <button class="btn btn-link text-teal" (click)="viewAllCategories()">View all categories</button>
+      </div>
+      <div class="d-flex flex-wrap gap-3">
+        <button
+          *ngFor="let category of categories"
+          (click)="onCategoryClick(category.categoryName)"
+          class="btn btn-category rounded-pill px-4 py-2"
+          [class.active]="searchQuery === category.categoryName"
+        >
+          <i class="bi {{category.icon}} me-2"></i>
+          {{ category.categoryName }}
+        </button>
+      </div>
+    </section>
+
+    <!-- Featured Medicines -->
+    <section class="mb-5">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="section-title m-0">
+          <i class="bi bi-star-fill me-2 text-teal"></i>Featured Medicines
+        </h2>
+        <button class="btn btn-link text-teal" (click)="viewAllMedicines()">View all medicines</button>
+      </div>
+      <app-drug-list [searchQuery]="searchQuery"></app-drug-list>
+    </section>
+
+    <!-- Trust Indicators -->
+    <section class="trust-section py-5 mb-5 rounded-4">
+      <div class="row text-center g-4">
+        <div class="col-md-4">
+          <div class="trust-card p-4 h-100 rounded-3">
+            <i class="bi bi-shield-check trust-icon text-teal"></i>
+            <h4 class="mt-3">100% Genuine</h4>
+            <p class="text-muted">Certified medicines from licensed pharmacies</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="trust-card p-4 h-100 rounded-3">
+            <i class="bi bi-truck trust-icon text-teal"></i>
+            <h4 class="mt-3">Fast Delivery</h4>
+            <p class="text-muted">Same-day delivery available in select areas</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="trust-card p-4 h-100 rounded-3">
+            <i class="bi bi-headset trust-icon text-teal"></i>
+            <h4 class="mt-3">24/7 Support</h4>
+            <p class="text-muted">Pharmacists available round the clock</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 </main>
 
-<app-footer></app-footer> <!-- Use footer component -->
+<app-footer></app-footer>

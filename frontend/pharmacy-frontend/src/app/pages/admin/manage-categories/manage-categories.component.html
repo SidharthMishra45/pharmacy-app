@@ -1,0 +1,47 @@
+<div class="manage-categories-container">
+  <div class="header-section">
+    <h2><i class="fas fa-tags"></i> Manage Categories</h2>
+  </div>
+
+  <div class="add-category-section">
+    <div class="input-group">
+      <input 
+        type="text" 
+        [(ngModel)]="newCategoryName" 
+        placeholder="Enter new category name" 
+        class="category-input"
+        (keyup.enter)="addCategory()" />
+      <button (click)="addCategory()" class="btn-add-category" [disabled]="!newCategoryName.trim()">
+        <i class="fas fa-plus"></i> Add Category
+      </button>
+    </div>
+    <div *ngIf="errorMessage" class="error-message">
+      <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+    </div>
+    <div *ngIf="successMessage" class="success-message">
+      <i class="fas fa-check-circle"></i> {{ successMessage }}
+    </div>
+  </div>
+
+  <div class="category-list">
+    <div *ngIf="isLoading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading categories...</p>
+    </div>
+
+    <div *ngIf="!isLoading && categories.length === 0" class="empty-state">
+      <i class="fas fa-box-open"></i>
+      <p>No categories found. Add your first category!</p>
+    </div>
+
+    <div *ngFor="let category of categories" class="category-card">
+      <div class="category-info">
+        <span class="category-name">{{ category.categoryName }}</span>
+        <span class="category-id">ID: {{ category.categoryId }}</span>
+      </div>
+      <button (click)="deleteCategory(category.categoryId)" class="btn-delete-category">
+        <i class="fas fa-trash-alt"></i> Delete
+      </button>
+    </div>
+  </div>
+</div>

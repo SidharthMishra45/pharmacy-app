@@ -1,38 +1,95 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, EventEmitter, Output, OnInit, OnDestroy } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 import { CartService } from '../../services/cart.service';
-import { FormsModule } from '@angular/forms'; // 
+import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { filter, Subscription } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [FormsModule], // 
+  imports: [FormsModule, CommonModule],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit, OnDestroy {
   cartCount: number = 0;
   searchQuery: string = '';
+  isLoginPage: boolean = false;
+  isLoggedIn: boolean = false;
 
-  @Output() searchPerformed = new EventEmitter<string>(); 
+  private cartSubscription: Subscription | undefined;
+  private routerSubscription: Subscription | undefined;
 
-  constructor(private router: Router, public cartService: CartService) {
-    this.cartService.cartCount$.subscribe(count => {
+  @Output() searchPerformed = new EventEmitter<string>();
+
+  constructor(
+    private router: Router,
+    private cartService: CartService,
+    private authService: AuthService
+  ) {}
+
+  ngOnInit(): void {
+    // Subscribe to cart count changes
+    this.cartSubscription = this.cartService.cartCount$.subscribe(count => {
       this.cartCount = count;
     });
+
+    // Watch for route changes
+    this.routerSubscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: any) => {
+        this.isLoginPage = event.url.includes('/login');
+        this.checkLoginStatus();
+      });
+
+    // Initial check
+    this.checkLoginStatus();
   }
 
-  onLogin() {
+  ngOnDestroy(): void {
+    // Clean up subscriptions
+    if (this.cartSubscription) {
+      this.cartSubscription.unsubscribe();
+    }
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
+  }
+
+  checkLoginStatus(): void {
+    this.isLoggedIn = this.authService.isLoggedIn();
+  }
+
+  onLogin(): void {
     this.router.navigate(['/login']);
   }
 
-  onSearch() {
-    this.searchPerformed.emit(this.searchQuery);
-    console.log('Searching for:', this.searchQuery);
-    // 🔥 Emit search text
+  goHome(): void {
+    this.router.navigate(['/']);
   }
 
-  viewCart() {
-    this.router.navigate(['/cart']);
+  logout(): void {
+    this.authService.logout();
+    this.cartService.clearCart(); // Clear cart on logout
+    this.router.navigate(['/login']);
+  }
+
+  onSearch(): void {
+    if (this.searchQuery.trim()) {
+      this.searchPerformed.emit(this.searchQuery.trim());
+      this.searchQuery = ''; // Optional: clear search after performing
+    }
+  }
+
+  viewCart(): void {
+    if (this.cartCount > 0) {
+      this.router.navigate(['/cart']);
+    }
+  }
+
+  viewOrders(): void {
+    this.router.navigate(['/orders']);
   }
 }

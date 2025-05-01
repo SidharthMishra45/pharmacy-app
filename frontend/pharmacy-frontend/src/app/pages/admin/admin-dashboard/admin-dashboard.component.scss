@@ -1,36 +1,194 @@
+// Teal color scheme - UPDATED SYNTAX
+$primary-color: #1ab2b2;
+$primary-dark: darken($primary-color, 10%);
+$primary-light: lighten($primary-color, 20%);
+$sidebar-width: 250px;
+$transition-speed: 0.3s;
+
 .admin-layout {
-    display: flex;
-    min-height: 100vh;
-  
-    .sidebar {
-      width: 220px;
-      background-color: #f4f4f4;
-      padding: 1rem;
-  
-      ul {
-        list-style: none;
-        padding: 0;
-  
-        li {
-          margin-bottom: 1rem;
-  
-          a {
-            text-decoration: none;
-            color: #333;
-  
-            &.active {
-              font-weight: bold;
-              color: #007bff;
-            }
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.sidebar {
+  width: $sidebar-width;
+  background-color: white;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  transition: width $transition-speed;
+  z-index: 1000;
+
+  .sidebar-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    text-align: center;
+    
+    h3 {
+      color: $primary-color;
+      margin: 0;
+      font-weight: 600;
+    }
+  }
+
+  .nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    overflow-y: auto;
+
+    li {
+      a {
+        display: flex;
+        align-items: center;
+        padding: 0.8rem 1.5rem;
+        color: #555;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        border-left: 3px solid transparent;
+
+        fa-icon {
+          margin-right: 0.8rem;
+          color: #777;
+          width: 20px;
+          text-align: center;
+        }
+
+        &:hover {
+          background-color: rgba($primary-color, 0.05);
+          color: $primary-dark;
+          border-left-color: $primary-light;
+
+          fa-icon {
+            color: $primary-color;
+          }
+        }
+
+        &.active {
+          background-color: rgba($primary-color, 0.1);
+          color: $primary-dark;
+          border-left-color: $primary-color;
+          font-weight: 500;
+
+          fa-icon {
+            color: $primary-color;
           }
         }
       }
     }
-  
-    .main-view {
-      flex-grow: 1;
-      padding: 2rem;
-      background-color: #fff;
+  }
+
+  .sidebar-footer {
+    padding: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+
+    .btn-logout {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding: 0.6rem 1rem;
+      background-color: transparent;
+      border: none;
+      color: #dc3545;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+
+      fa-icon {
+        margin-right: 0.5rem;
+      }
+
+      &:hover {
+        background-color: rgba(220, 53, 69, 0.1);
+      }
     }
   }
-  
+}
+
+.main-view {
+  flex-grow: 1;
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  overflow-y: auto;
+
+  .container-fluid {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+    min-height: calc(100vh - 3rem);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 992px) {
+  .sidebar {
+    width: 70px;
+    overflow: hidden;
+
+    .sidebar-header h3,
+    .nav-links li a span,
+    .btn-logout span {
+      display: none;
+    }
+
+    .nav-links li a {
+      justify-content: center;
+      padding: 1rem;
+
+      fa-icon {
+        margin-right: 0;
+        font-size: 1.3rem;
+      }
+    }
+
+    .btn-logout {
+      justify-content: center;
+      padding: 1rem !important;
+
+      fa-icon {
+        margin-right: 0;
+        font-size: 1.3rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .admin-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+
+    .nav-links {
+      display: flex;
+      overflow-x: auto;
+      flex-wrap: nowrap;
+
+      li {
+        flex: 0 0 auto;
+
+        a {
+          flex-direction: column;
+          padding: 0.5rem;
+          font-size: 0.8rem;
+
+          fa-icon {
+            margin-right: 0;
+            margin-bottom: 0.3rem;
+            font-size: 1.2rem;
+          }
+        }
+      }
+    }
+  }
+
+  .main-view {
+    padding: 1rem;
+  }
+}

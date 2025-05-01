@@ -2,7 +2,8 @@ export interface Order {
   orderId: string;
   status: string;
   totalAmount: number;
-  items: OrderItem[];  
+  items: OrderItem[]; 
+  orderDate: string; 
 }
 
 export interface OrderItem {

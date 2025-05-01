@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using Pharmacy.API.Models;
-
 
 namespace Pharmacy.API.Data
 {
@@ -15,7 +13,6 @@ namespace Pharmacy.API.Data
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<TransactionDetail> TransactionDetails { get; set; }
         public DbSet<Category> Categories { get; set; }
-
         public DbSet<Inventory> Inventories { get; set; }
 
         public PharmacyDbContext() { }
@@ -23,18 +20,25 @@ namespace Pharmacy.API.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // Inventory ID config
             modelBuilder.Entity<Inventory>()
                 .Property(i => i.InventoryId)
                 .ValueGeneratedOnAdd();
+
+            // Order-OrderItem relation
             modelBuilder.Entity<Order>()
                 .HasMany(o => o.OrderItems)
                 .WithOne(oi => oi.Order)
                 .HasForeignKey(oi => oi.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Supplier (ApplicationUser) - Orders relation
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.Supplier)
+                .WithMany(u => u.Orders)
+                .HasForeignKey(o => o.SupplierId)
+                .OnDelete(DeleteBehavior.Restrict); // To prevent cascading delete if user is deleted
         }
-
-        
-
     }
-
 }

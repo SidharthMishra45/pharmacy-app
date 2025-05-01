@@ -1,61 +1,114 @@
 import { CommonModule } from '@angular/common';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { CartService } from '../../services/cart.service';
 import { ApiService } from '../../services/api.service';
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core'; 
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-drug-list',
-  standalone: true, 
-  imports: [CommonModule], 
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    MatSnackBarModule
+  ],
   templateUrl: './drug-list.component.html',
-  styleUrls: ['./drug-list.component.scss'], 
+  styleUrls: ['./drug-list.component.scss']
 })
-export class DrugListComponent implements OnInit, OnChanges {  
+export class DrugListComponent implements OnChanges {
   @Input() searchQuery: string = '';
-
-  drugs: any[] = []; 
-  filteredDrugs: any[] = [];
-  totalCount: number = 0; 
+  
+  // Component properties
+  drugs: any[] = [];
+  isLoading: boolean = false;
+  currentPage: number = 1;
+  pageSize: number = 12;
+  totalCount: number = 0;
+  error: string | null = null;
 
   constructor(
     private apiService: ApiService,
     private snackBar: MatSnackBar,
-    private cartService: CartService 
+    private cartService: CartService
   ) {}
 
-  ngOnInit() : void {
-    if (!this.searchQuery) {
-      this.fetchDrugs(); 
-    }
+  // Calculate total pages
+  get totalPages(): number {
+    return Math.ceil(this.totalCount / this.pageSize);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['searchQuery'] && !changes['searchQuery'].firstChange) {
-      const newSearchTerm = changes['searchQuery'].currentValue;
-      console.log('Search query changed to:', newSearchTerm);
-      this.fetchDrugs(newSearchTerm);
+    if (changes['searchQuery']) {
+      this.currentPage = 1; // Reset to first page on new search
+      this.fetchDrugs();
     }
   }
 
-  fetchDrugs(searchTerm: string = '', page: number = 1, pageSize: number = 10): void {
-    console.log('Fetching drugs with search term:', searchTerm);
-    this.apiService.getFilteredDrugs(searchTerm, page, pageSize).subscribe({
-      next: response => {
-        console.log('Drug API Response:', response);
-        this.drugs = response.items;
-        this.totalCount = response.totalCount;
-      },
-      error: err => {
-        console.error('Error fetching drugs:', err);
-      }
-    });
+  // Generate page numbers for pagination
+  getPages(): number[] {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    let startPage = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(this.totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+    
+    return pages;
   }
 
-  addToCart(drug: any) {
+  // Fetch drugs from API
+  fetchDrugs(): void {
+    this.isLoading = true;
+    this.error = null;
+    
+    this.apiService.getFilteredDrugs(this.searchQuery, this.currentPage, this.pageSize)
+      .subscribe({
+        next: response => {
+          this.drugs = response.items;
+          this.totalCount = response.totalCount;
+          this.isLoading = false;
+        },
+        error: err => {
+          console.error('Error fetching drugs:', err);
+          this.error = 'Failed to load medicines. Please try again later.';
+          this.isLoading = false;
+          this.drugs = [];
+        }
+      });
+  }
+
+  // Change current page
+  changePage(page: number): void {
+    if (page >= 1 && page <= this.totalPages && page !== this.currentPage) {
+      this.currentPage = page;
+      this.fetchDrugs();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  // Add drug to cart
+  addToCart(drug: any): void {
     this.cartService.addToCart(drug);
     this.snackBar.open(`${drug.name} added to cart`, 'Close', {
       duration: 2000,
+      panelClass: ['snackbar-success']
     });
+  }
+
+  // Reset search query
+  resetSearch(): void {
+    this.searchQuery = '';
+    this.currentPage = 1;
+    this.fetchDrugs();
   }
 }

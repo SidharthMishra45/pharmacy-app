@@ -21,6 +21,7 @@ public class CategoryService : ICategoryService
     public async Task<Category> CreateCategoryAsync(Category category)
     {
         category.CategoryId = Guid.NewGuid();
+        category.CategoryName = category.CategoryName.Trim();
         _context.Categories.Add(category);
         await _context.SaveChangesAsync();
         return category;
@@ -31,7 +32,7 @@ public class CategoryService : ICategoryService
         var existingCategory = await _context.Categories.FindAsync(id);
         if (existingCategory == null) return false;
 
-        existingCategory.CategoryName = category.CategoryName;
+        existingCategory.CategoryName = category.CategoryName.Trim();
 
         await _context.SaveChangesAsync();
         return true;

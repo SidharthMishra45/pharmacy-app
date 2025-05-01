@@ -1,28 +1,76 @@
-<!-- Search Bar -->
-<input type="text" [(ngModel)]="searchQuery" placeholder="Search for items..." />
-<button (click)="filterItems()">Search</button>
-
-<!-- Show empty cart message when filteredCartItems is empty -->
-<div *ngIf="filteredCartItems.length === 0">
-  <p *ngIf="cartItems.length === 0">Your cart is empty.</p>
-  <p *ngIf="cartItems.length > 0">No items match your search.</p>
-  <button (click)="goToHome()" class="btn btn-primary">Return to Search Products</button>
-</div>
-
-<!-- Show cart when there are items -->
-<div *ngIf="filteredCartItems.length > 0">
-  <div *ngFor="let item of filteredCartItems">
-    <p>
-      {{ item.name }} - ₹{{ item.price }} x {{ item.quantity }}
-      = ₹{{ item.price * item.quantity }}
-    </p>
-
-    <button (click)="decreaseQuantity(item.drugId)">➖</button>
-    <button (click)="increaseQuantity(item.drugId)">➕</button>
-    <button (click)="removeFromCart(item.drugId)">❌ Remove</button>
+<div class="cart-container">
+  <!-- Search Bar -->
+  <div class="search-container mb-4">
+    <div class="input-group">
+      <input 
+        type="text" 
+        class="form-control" 
+        [(ngModel)]="searchQuery" 
+        placeholder="Search in your cart..."
+        (keyup.enter)="filterItems()"
+      />
+      <button class="btn btn-primary" (click)="filterItems()">
+        <i class="bi bi-search"></i> Search
+      </button>
+    </div>
   </div>
 
-  <p><strong>Total:</strong> ₹{{ totalAmount }}</p>
-  <button (click)="clearCart()">Clear Cart</button>
-  <button (click)="proceedToBuy()">Proceed to Buy</button>
+  <!-- Empty Cart Messages -->
+  <div *ngIf="filteredCartItems.length === 0" class="empty-cart text-center my-5 p-4">
+    <div class="empty-icon mb-3">
+      <i class="bi bi-cart-x" *ngIf="cartItems.length === 0"></i>
+      <i class="bi bi-search" *ngIf="cartItems.length > 0"></i>
+    </div>
+    <h4 *ngIf="cartItems.length === 0" class="text-muted">Your cart is empty</h4>
+    <h4 *ngIf="cartItems.length > 0" class="text-warning">No items match your search</h4>
+    <p class="text-muted mb-4">Browse our products to add items to your cart</p>
+    <button class="btn btn-primary" (click)="goToHome()">
+      <i class="bi bi-arrow-left"></i> Continue Shopping
+    </button>
+  </div>
+
+  <!-- Cart Items -->
+  <div *ngIf="filteredCartItems.length > 0" class="cart-items card p-4">
+    <h3 class="mb-4">Your Cart ({{ filteredCartItems.length }} items)</h3>
+    
+    <div *ngFor="let item of filteredCartItems" class="cart-item d-flex align-items-center justify-content-between mb-3 border-bottom pb-3">
+      <div class="item-info">
+        <h5 class="mb-1">{{ item.name }}</h5>
+        <div class="item-details">
+          <span class="text-muted">₹{{ item.price | number:'1.2-2' }} × {{ item.quantity }}</span>
+          <span class="item-total ms-2 fw-bold">₹{{ (item.price * item.quantity) | number:'1.2-2' }}</span>
+        </div>
+      </div>
+
+      <div class="item-actions">
+        <div class="btn-group" role="group">
+          <button class="btn btn-outline-secondary" (click)="decreaseQuantity(item.drugId)" [disabled]="item.quantity <= 1">
+            <i class="bi bi-dash"></i>
+          </button>
+          <span class="btn btn-light disabled">{{ item.quantity }}</span>
+          <button class="btn btn-outline-secondary" (click)="increaseQuantity(item.drugId)">
+            <i class="bi bi-plus"></i>
+          </button>
+        </div>
+        <button class="btn btn-outline-danger ms-2" (click)="removeFromCart(item.drugId)">
+          <i class="bi bi-trash"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="cart-summary mt-4 pt-3 border-top">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0">Subtotal:</h5>
+        <h4 class="mb-0">₹{{ totalAmount | number:'1.2-2' }}</h4>
+      </div>
+      <div class="d-flex justify-content-between">
+        <button class="btn btn-outline-danger" (click)="clearCart()">
+          <i class="bi bi-trash"></i> Clear Cart
+        </button>
+        <button class="btn btn-success" (click)="proceedToBuy()">
+          <i class="bi bi-bag-check"></i> Proceed to Checkout
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

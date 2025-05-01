@@ -16,6 +16,11 @@ export class InventoryService {
     return this.http.get<Inventory[]>(this.apiUrl);
   }
 
+  getAllInventoriesForAdmin(): Observable<Inventory[]> {
+    return this.http.get<Inventory[]>(`${this.apiUrl}/all`);
+  }
+  
+
   addInventory(inventory: Inventory): Observable<Inventory> {
     return this.http.post<Inventory>(this.apiUrl, inventory);
   }

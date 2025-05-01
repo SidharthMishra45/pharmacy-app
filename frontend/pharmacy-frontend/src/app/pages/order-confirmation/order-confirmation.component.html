@@ -1,12 +1,57 @@
 <div class="confirmation-container">
-  <h2>Order Summary</h2>
-  <ul>
-    <li *ngFor="let item of cartItems">
-      {{ item.name }} (x{{ item.quantity }}) - ₹{{ item.price * item.quantity }}
-    </li>
-  </ul>
-  <h3>Total: ₹{{ totalAmount }}</h3>
-  <button (click)="makePayment()" [disabled]="placingOrder">
-    {{ placingOrder ? 'Placing Order...' : 'Make Payment' }}
-  </button>
+  <div class="confirmation-card">
+    <div class="confirmation-header">
+      <h2><i class="bi bi-check-circle text-success"></i> Order Summary</h2>
+      <p class="text-muted">Review your order before payment</p>
+    </div>
+
+    <div class="order-items">
+      <div *ngFor="let item of cartItems" class="order-item">
+        <div class="item-info">
+          <h5>{{ item.name }}</h5>
+          <div class="item-details">
+            <span class="text-muted">₹{{ item.price | number:'1.2-2' }} × {{ item.quantity }}</span>
+            <span class="item-price">₹{{ (item.price * item.quantity) | number:'1.2-2' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="order-summary">
+      <div class="summary-row">
+        <span>Subtotal:</span>
+        <span>₹{{ totalAmount | number:'1.2-2' }}</span>
+      </div>
+      <div class="summary-row">
+        <span>Shipping:</span>
+        <span>Free</span>
+      </div>
+      <div class="summary-row total">
+        <span>Total:</span>
+        <span>₹{{ totalAmount | number:'1.2-2' }}</span>
+      </div>
+    </div>
+
+    <div class="payment-actions">
+      <button 
+        class="btn btn-primary btn-pay" 
+        (click)="makePayment()" 
+        [disabled]="placingOrder"
+      >
+        <span *ngIf="!placingOrder">
+          <i class="bi bi-credit-card"></i> Make Payment (₹{{ totalAmount | number:'1.2-2' }})
+        </span>
+        <span *ngIf="placingOrder">
+          <div class="spinner-border spinner-border-sm" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          Processing Payment...
+        </span>
+      </button>
+      
+      <button class="btn btn-outline-secondary" (click)="goBack()" [disabled]="placingOrder">
+        <i class="bi bi-arrow-left"></i> Back to Cart
+      </button>
+    </div>
+  </div>
 </div>

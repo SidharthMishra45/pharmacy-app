@@ -44,6 +44,11 @@ export class AuthService {
       return null;
     }
   }
+
+  getAllSuppliers(): Observable<any[]> {
+    return this.http.get<any[]>(`${appConfig.apiUrl}/Users/getsuppliers`);
+  }
+  
   
   private decodeToken(token: string): any {
     const parts = token.split('.');
@@ -51,7 +56,32 @@ export class AuthService {
     return JSON.parse(payload);
   }
   
+  getUserId(): string | null {
+    const token = this.getToken();
+    if (!token) return null;
   
+    try {
+      const decodedToken = this.decodeToken(token);
+      const userId = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+      return userId || null;
+    } catch (e) {
+      console.error('Failed to decode token for user ID', e);
+      return null;
+    }
+  }
+  
+  isLoggedIn(): boolean {
+    const token = this.getToken();
+    if (!token) return false;
+  
+    try {
+      const decodedToken = this.decodeToken(token);
+      const currentTime = Date.now() / 1000;
+      return decodedToken.exp > currentTime;
+    } catch (err) {
+      return false;
+    }
+  }
   
   
 

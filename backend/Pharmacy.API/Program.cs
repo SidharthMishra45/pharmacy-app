@@ -8,6 +8,7 @@ using Pharmacy.API.Services;
 using System.Text;
 using Pharmacy.API.Profiles;
 using System.Security.Claims;
+using Pharmacy.API.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +29,7 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IDrugService, DrugService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IInventoryService, InventoryService>();
-
+builder.Services.AddScoped<ISalesReportService, SalesReportService>();
 // ---------------------------
 // 👤 Identity Configuration
 // ---------------------------

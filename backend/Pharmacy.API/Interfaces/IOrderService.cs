@@ -11,8 +11,6 @@ namespace Pharmacy.API.Services
         Task<OrderResponseDto?> GetOrderByIdAsync(Guid orderId, Guid doctorId);
 
         Task<IEnumerable<OrderResponseDto>> GetOrdersByStatusAsync(string status);
-
-        Task<bool> UpdateOrderStatusAsync(Guid orderId, string newStatus);
-
+        Task<bool> UpdateOrderStatusAsync(Guid orderId, string newStatus, Guid? supplierId = null);
     }
 }

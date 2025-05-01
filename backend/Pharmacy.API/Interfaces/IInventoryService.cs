@@ -12,5 +12,8 @@ namespace Pharmacy.API.Services
         Task<InventoryReadDto> CreateInventoryAsync(Guid supplierId, InventoryCreateDto dto);
         Task<bool> UpdateInventoryAsync(Guid supplierId, InventoryUpdateDto dto);
         Task<bool> DeleteInventoryAsync(Guid inventoryId, Guid supplierId);
+
+        Task<IEnumerable<InventoryReadDto>> GetAllInventoriesForAdminAsync();
+
     }
 }

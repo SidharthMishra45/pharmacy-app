@@ -24,6 +24,7 @@ namespace Pharmacy.API.Services
             order.OrderDate = DateTime.UtcNow;
             order.DoctorId = doctorId;
             order.Status = "Pending";
+            order.SupplierId = null;
 
             // Generate OrderItemIds and assign OrderId
             foreach (var item in order.OrderItems)
@@ -89,19 +90,44 @@ namespace Pharmacy.API.Services
             return _mapper.Map<IEnumerable<OrderResponseDto>>(orders);
         }
 
-        public async Task<bool> UpdateOrderStatusAsync(Guid orderId, string newStatus)
+        public async Task<bool> AcceptOrderAsync(Guid orderId, Guid supplierId)
         {
             var order = await _context.Orders.FindAsync(orderId);
             if (order == null)
                 return false;
 
-            order.Status = newStatus;
+            // Assign the supplier when the order is accepted
+            order.SupplierId = supplierId;
+            order.Status = "Accepted";  // Update the status to accepted or any relevant status
 
             _context.Orders.Update(order);
             await _context.SaveChangesAsync();
 
             return true;
         }
+
+
+        public async Task<bool> UpdateOrderStatusAsync(Guid orderId, string newStatus, Guid? supplierId = null)
+        {
+            var order = await _context.Orders.FindAsync(orderId);
+            if (order == null)
+                return false;
+
+            // Update order status
+            order.Status = newStatus;
+
+            // If the status is 'Accepted' and supplierId is provided, update the SupplierId
+            if (newStatus == "Accepted" && supplierId.HasValue)
+            {
+                order.SupplierId = supplierId.Value;
+            }
+
+            _context.Orders.Update(order);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
 
         
     }

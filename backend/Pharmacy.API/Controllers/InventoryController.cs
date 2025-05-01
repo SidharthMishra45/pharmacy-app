@@ -12,7 +12,6 @@ namespace Pharmacy.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = UserRoles.Supplier)]
     public class InventoryController : ControllerBase
     {
         private readonly IInventoryService _inventoryService;
@@ -21,6 +20,15 @@ namespace Pharmacy.API.Controllers
         {
             _inventoryService = inventoryService;
         }
+
+        [HttpGet("all")]
+        [Authorize(Roles = UserRoles.Admin)]
+        public async Task<ActionResult<IEnumerable<InventoryReadDto>>> GetAllInventories()
+        {
+            var inventories = await _inventoryService.GetAllInventoriesForAdminAsync();
+            return Ok(inventories);
+        }
+
 
         // GET: api/Inventory
         [HttpGet]

@@ -1,1 +1,72 @@
-<p>sales-report works!</p>
+<div class="sales-report-container">
+    <h2>Sales Report</h2>
+  
+    <div *ngIf="isLoading" class="loading-indicator">
+      <p>Loading...</p>
+    </div>
+  
+    <!-- Filter form -->
+    <div class="filters">
+      <div class="filter-group">
+        <label for="supplierId">Supplier:</label>
+        <select id="supplierId" [(ngModel)]="supplierId" required>
+          <option value="">Select Supplier</option>
+          <option *ngFor="let supplier of suppliers" [value]="supplier?.id?.toString()">{{ supplier?.name || 'Unknown' }}</option>
+        </select>
+      </div>
+  
+      <div class="filter-group">
+        <label for="fromDate">From Date:</label>
+        <input
+          type="date"
+          id="fromDate"
+          [(ngModel)]="fromDate"
+          [min]="minDate"
+        />
+      </div>
+  
+      <div class="filter-group">
+        <label for="toDate">To Date:</label>
+        <input
+          type="date"
+          id="toDate"
+          [(ngModel)]="toDate"
+          [min]="minDate"
+        />
+      </div>
+  
+      <div class="button-group">
+        <button (click)="fetchReport()" [disabled]="isLoading">Fetch Report</button>
+        <button (click)="downloadReport()" [disabled]="isLoading || !salesReport.length">Download PDF</button>
+      </div>
+    </div>
+  
+    <!-- Sales report table -->
+    <div *ngIf="salesReport.length > 0" class="report-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Drug Names</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Supplier</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let report of salesReport">
+            <td>{{ report.drugNames?.join(', ') || 'N/A' }}</td>
+            <td>{{ report.quantity }}</td>
+            <td>{{ report.price | currency }}</td>
+            <td>{{ report.supplierName }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- No data message -->
+    <div *ngIf="!isLoading && salesReport.length === 0" class="no-data">
+      <p>No sales data available for the selected filters.</p>
+    </div>
+  </div>
+  
+  

@@ -1,22 +1,57 @@
 <div class="admin-layout">
-    <aside class="sidebar">
-      <ul>
-        <li>
-          <a [routerLink]="['./manage-drugs']" routerLinkActive="active">Manage Drugs</a>
-        </li>
-        <li>
-          <a [routerLink]="['./manage-orders']" routerLinkActive="active">Manage Orders</a>
-        </li>
-        <li>
-          <a [routerLink]="['./manage-users']" routerLinkActive="active">Manage Users</a>
-        </li>
-        <li><a [routerLink]="['./reports/inventory-report']" routerLinkActive="active">Inventory Report</a></li>
-    <li><a [routerLink]="['./reports/sales-report']" routerLinkActive="active">Sales Report</a></li>
-      </ul>
-    </aside>
-  
-    <main class="main-view">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h3>PharmAce Admin</h3>
+    </div>
+    <ul class="nav-links">
+      <li>
+        <a [routerLink]="['./manage-drugs']" routerLinkActive="active">
+          <i class="bi bi-capsule"></i>
+          <span>Manage Drugs</span>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['./manage-orders']" routerLinkActive="active">
+          <i class="bi bi-cart-check"></i>
+          <span>Manage Orders</span>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['./manage-users']" routerLinkActive="active">
+          <i class="bi bi-people"></i>
+          <span>Manage Users</span>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['./manage-categories']" routerLinkActive="active">
+          <i class="bi bi-tags"></i>
+          <span>Manage Categories</span>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['./reports/inventory-report']" routerLinkActive="active">
+          <i class="bi bi-clipboard-data"></i>
+          <span>Inventory Report</span>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['./reports/sales-report']" routerLinkActive="active">
+          <i class="bi bi-graph-up"></i>
+          <span>Sales Report</span>
+        </a>
+      </li>
+    </ul>
+    <div class="sidebar-footer">
+      <button (click)="logout()" class="btn-logout">
+        <i class="bi bi-box-arrow-left"></i>
+        <span>Logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <main class="main-view">
+    <div class="container-fluid">
       <router-outlet></router-outlet>
-    </main>
-  </div>
-  
+    </div>
+  </main>
+</div>
