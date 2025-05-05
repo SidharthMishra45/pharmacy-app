@@ -1,7 +1,9 @@
+@use 'sass:color';
+
 // Teal color scheme - UPDATED SYNTAX
 $primary-color: #1ab2b2;
-$primary-dark: darken($primary-color, 10%);
-$primary-light: lighten($primary-color, 20%);
+$primary-dark: color.adjust($primary-color, $lightness: -10%);
+$primary-light: color.adjust($primary-color, $lightness: 20%);
 $sidebar-width: 250px;
 $transition-speed: 0.3s;
 

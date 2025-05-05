@@ -21,6 +21,7 @@ namespace Pharmacy.API.Controllers
             _inventoryService = inventoryService;
         }
 
+        // Admin only: Get all inventories across suppliers
         [HttpGet("all")]
         [Authorize(Roles = UserRoles.Admin)]
         public async Task<ActionResult<IEnumerable<InventoryReadDto>>> GetAllInventories()
@@ -29,9 +30,9 @@ namespace Pharmacy.API.Controllers
             return Ok(inventories);
         }
 
-
-        // GET: api/Inventory
+        // Supplier: Get own inventory
         [HttpGet]
+        [Authorize(Roles = UserRoles.Supplier)]
         public async Task<ActionResult<IEnumerable<InventoryReadDto>>> GetMyInventory()
         {
             var supplierId = GetLoggedInUserId();
@@ -39,8 +40,9 @@ namespace Pharmacy.API.Controllers
             return Ok(inventories);
         }
 
-        // GET: api/Inventory/{id}
+        // Supplier: Get specific inventory by ID
         [HttpGet("{id}")]
+        [Authorize(Roles = UserRoles.Supplier)]
         public async Task<ActionResult<InventoryReadDto>> GetInventory(Guid id)
         {
             var supplierId = GetLoggedInUserId();
@@ -52,8 +54,9 @@ namespace Pharmacy.API.Controllers
             return Ok(inventory);
         }
 
-        // POST: api/Inventory
+        // Supplier: Create new inventory
         [HttpPost]
+        [Authorize(Roles = UserRoles.Supplier)]
         public async Task<ActionResult<InventoryReadDto>> CreateInventory([FromBody] InventoryCreateDto dto)
         {
             var supplierId = GetLoggedInUserId();
@@ -62,57 +65,48 @@ namespace Pharmacy.API.Controllers
             return CreatedAtAction(nameof(GetInventory), new { id = createdInventory.InventoryId }, createdInventory);
         }
 
-        // PUT: api/Inventory/{id}
+        // Supplier: Update existing inventory
         [HttpPut("{id}")]
+        [Authorize(Roles = UserRoles.Supplier)]
         public async Task<IActionResult> UpdateInventory(Guid id, [FromBody] InventoryUpdateDto dto)
         {
             if (id != dto.InventoryId)
-                return BadRequest("ID mismatch.");
+                return BadRequest("Inventory ID mismatch.");
 
             var supplierId = GetLoggedInUserId();
             var success = await _inventoryService.UpdateInventoryAsync(supplierId, dto);
 
             if (!success)
-                return NotFound("Inventory not found.");
+                return NotFound("Inventory item not found or unauthorized.");
 
             return NoContent();
         }
 
-        // DELETE: api/Inventory/{id}
+        // Supplier: Delete inventory
         [HttpDelete("{id}")]
+        [Authorize(Roles = UserRoles.Supplier)]
         public async Task<IActionResult> DeleteInventory(Guid id)
         {
             var supplierId = GetLoggedInUserId();
             var success = await _inventoryService.DeleteInventoryAsync(id, supplierId);
 
             if (!success)
-                return NotFound("Inventory not found.");
+                return NotFound("Inventory item not found or unauthorized.");
 
             return NoContent();
         }
 
+        // Helper method to extract logged-in user's GUID
         private Guid GetLoggedInUserId()
         {
-            Console.WriteLine("All claims:");
-            foreach (var claim in User.Claims)
-            {
-                Console.WriteLine($"{claim.Type}: {claim.Value}");
-            }
-
             var userIdString = User.FindFirst("UserGuid")?.Value;
-            if (userIdString == null)
-            {
-                throw new InvalidOperationException("UserGuid claim is missing.");
-            }
-            Console.WriteLine($"Extracted UserGuid: {userIdString}");
+            if (string.IsNullOrEmpty(userIdString))
+                throw new UnauthorizedAccessException("UserGuid claim is missing.");
 
             if (!Guid.TryParse(userIdString, out var userId))
-            {
-                throw new InvalidOperationException("Invalid GUID format for User ID.");
-            }
+                throw new UnauthorizedAccessException("Invalid GUID format for User ID.");
+
             return userId;
-
         }
-
     }
 }

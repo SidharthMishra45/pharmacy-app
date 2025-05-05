@@ -10,7 +10,17 @@ namespace Pharmacy.API.Services
         Task<IEnumerable<OrderResponseDto>> GetOrdersByDoctorIdAsync(Guid doctorId);
         Task<OrderResponseDto?> GetOrderByIdAsync(Guid orderId, Guid doctorId);
 
+        Task<bool> AcceptOrderAsync(Guid orderId, Guid? supplierId);
+
+        Task<bool> RejectOrderAsync(Guid orderId, Guid? supplierId);
+
+
         Task<IEnumerable<OrderResponseDto>> GetOrdersByStatusAsync(string status);
+        
+        Task<IEnumerable<OrderResponseDto>> GetAcceptedOrdersBySupplierAsync(Guid supplierId);
+
+        Task<IEnumerable<OrderResponseDto>> GetRejectedOrdersBySupplierAsync(Guid supplierId);
+
         Task<bool> UpdateOrderStatusAsync(Guid orderId, string newStatus, Guid? supplierId = null);
     }
 }

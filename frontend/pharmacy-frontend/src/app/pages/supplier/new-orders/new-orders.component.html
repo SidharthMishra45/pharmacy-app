@@ -1,18 +1,68 @@
-<div class="orders-container">
-  <h2>New Orders</h2>
-  <div *ngIf="newOrders.length === 0">No new orders found.</div>
+<div class="container py-4 new-orders-container">
+  <h2 class="text-center teal-text mb-4">New Orders</h2>
 
-  <div *ngFor="let order of newOrders" class="order-card">
-    <h4>Order #{{ order.orderId }}</h4>
-    <p>Total: ${{ order.totalAmount }}</p>
-    <p>Status: {{ order.status }}</p>
-    <ul>
-      <li *ngFor="let item of order.items">
-        {{ item.drugName }} - Qty: {{ item.quantity }} - Price: ${{ item.price }}
-      </li>
-    </ul>
+  <!-- Search & Sort -->
+  <div class="row mb-3 align-items-center">
+    <div class="col-md-6 mb-2">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Search by drug name..."
+        [(ngModel)]="searchQuery"
+        (input)="applyFilters()"
+      />
+    </div>
+    <div class="col-md-6 d-flex justify-content-md-end">
+      <button class="btn btn-outline-info me-2" (click)="sortOrders('latest')">
+        Latest First
+      </button>
+      <button class="btn btn-outline-secondary" (click)="sortOrders('oldest')">
+        Oldest First
+      </button>
+    </div>
+  </div>
 
-    <button (click)="acceptOrder(order.orderId)" class="btn-accept">Accept</button>
-    <button (click)="rejectOrder(order.orderId)" class="btn-reject">Reject</button>
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="d-flex justify-content-center py-5">
+    <div class="spinner-border text-info" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Order List -->
+  <div *ngIf="!isLoading && (filteredOrders.length > 0 || newOrders.length > 0)" class="row g-4">
+    <div
+      class="col-md-6 col-lg-4"
+      *ngFor="let order of filteredOrders.length ? filteredOrders : newOrders"
+    >
+      <div class="card order-card shadow-lg">
+        <div class="card-body">
+          <h5 class="card-title">Order #{{ order.orderId?.slice(0, 8) }}</h5>
+          <div class="card-text">
+            <strong>Date:</strong> {{ order.orderDate | date: 'mediumDate' }}<br />
+            <strong>Items:</strong>
+            <ul class="ps-3 mb-2">
+              <li *ngFor="let item of order.items">
+                {{ item.drugName }} × {{ item.quantity }}
+              </li>
+            </ul>
+            <strong>Total:</strong> ₹{{ order.totalAmount.toFixed(2) }}
+          </div>
+          <div class="d-flex justify-content-between">
+            <button class="btn btn-success btn-sm" (click)="acceptOrder(order.orderId!)">
+              Accept
+            </button>
+            <button class="btn btn-danger btn-sm" (click)="rejectOrder(order.orderId!)">
+              Reject
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Orders -->
+  <div *ngIf="!isLoading && !filteredOrders.length && newOrders.length === 0" class="text-center text-muted mt-5">
+    No new orders to display.
   </div>
 </div>

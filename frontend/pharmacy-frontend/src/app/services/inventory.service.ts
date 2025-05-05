@@ -12,23 +12,29 @@ export class InventoryService {
 
   constructor(private http: HttpClient) {}
 
+  // Supplier: Get own inventory
   getSupplierInventory(): Observable<Inventory[]> {
     return this.http.get<Inventory[]>(this.apiUrl);
   }
 
+  // Admin only: Get all inventories across suppliers
   getAllInventoriesForAdmin(): Observable<Inventory[]> {
     return this.http.get<Inventory[]>(`${this.apiUrl}/all`);
   }
-  
+
+  // Supplier: Get specific inventory by ID
+  getInventoryById(id: string): Observable<Inventory> {
+    return this.http.get<Inventory>(`${this.apiUrl}/${id}`);
+  }
 
   addInventory(inventory: Inventory): Observable<Inventory> {
-    return this.http.post<Inventory>(this.apiUrl, inventory);
+    return this.http.post<Inventory>(`${this.apiUrl}`, inventory);
   }
-
-  updateInventory(id: string, inventory: Inventory): Observable<Inventory> {
-    return this.http.put<Inventory>(`${this.apiUrl}/${id}`, inventory);
+  
+  updateInventory(id: string, inventory: Inventory): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/${id}`, inventory);
   }
-
+  // Supplier: Delete inventory
   deleteInventory(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }

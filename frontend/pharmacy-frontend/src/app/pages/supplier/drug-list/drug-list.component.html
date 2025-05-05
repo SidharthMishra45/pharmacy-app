@@ -1,36 +1,50 @@
-<div class="drug-list-page">
-  <h2>Drug List</h2>
-
-  <button (click)="showAddForm = !showAddForm" class="toggle-form-btn">
-    {{ showAddForm ? 'Cancel' : 'Add Drug' }}
-  </button>
+<div class="drug-list-container">
+  <div class="header-section">
+    <h2><i class="fas fa-pills"></i> Manage Drugs</h2>
+    <button class="btn btn-teal" (click)="showAddForm = !showAddForm">
+      <i class="fas" [ngClass]="showAddForm ? 'fa-times' : 'fa-plus'"></i>
+      {{ showAddForm ? 'Cancel' : 'Add Drug' }}
+    </button>
+  </div>
 
   <!-- Add/Edit Form -->
-  <div *ngIf="showAddForm" class="form-box">
-    <h3>{{ editMode ? 'Edit Drug' : 'Add New Drug' }}</h3>
+  <div *ngIf="showAddForm" class="drug-form-section">
+    <h4 class="form-title">{{ editMode ? 'Edit Drug' : 'Add New Drug' }}</h4>
     <form (ngSubmit)="editMode ? updateDrug() : addDrug()" #drugForm="ngForm">
-      <div class="form-row">
-        <input type="text" name="name" [(ngModel)]="newDrug.name" placeholder="Name" required />
+      <div class="row g-3">
+        <div class="col-md-6">
+          <input type="text" name="name" [(ngModel)]="newDrug.name" class="form-control" placeholder="Name" required />
+        </div>
+        <div class="col-md-6">
+          <input type="number" name="price" [(ngModel)]="newDrug.price" class="form-control" placeholder="Price (₹)" required />
+        </div>
+        <div class="col-md-6">
+          <input type="text" name="categoryName" [(ngModel)]="newDrug.categoryName" class="form-control" placeholder="Category" required />
+        </div>
+        <div class="col-md-12">
+          <textarea name="description" [(ngModel)]="newDrug.description" class="form-control" placeholder="Description" rows="3"></textarea>
+        </div>
       </div>
-      <div class="form-row">
-        <textarea name="description" [(ngModel)]="newDrug.description" placeholder="Description"></textarea>
+      <div class="mt-3">
+        <button type="submit" [disabled]="drugForm.invalid" class="btn btn-success">
+          <i class="fas fa-check-circle"></i> {{ editMode ? 'Update' : 'Submit' }}
+        </button>
+        <button type="button" class="btn btn-secondary ms-2" (click)="cancelForm()">
+          <i class="fas fa-times-circle"></i> Cancel
+        </button>
       </div>
-      <div class="form-row">
-        <input type="number" name="price" [(ngModel)]="newDrug.price" placeholder="Price (₹)" required />
-        <input type="text" name="categoryName" [(ngModel)]="newDrug.categoryName" placeholder="Category Name" required />
-      </div>
-      <button type="submit" [disabled]="drugForm.invalid" class="submit-btn">
-        {{ editMode ? 'Update' : 'Submit' }}
-      </button>
     </form>
   </div>
 
   <!-- Drug Table -->
-  <div *ngIf="drugs.length === 0" class="no-drugs">No drugs found.</div>
+  <div *ngIf="drugs.length === 0" class="empty-state">
+    <i class="fas fa-box-open"></i>
+    <p>No drugs found. Add your first drug!</p>
+  </div>
 
-  <div class="table-wrapper" *ngIf="drugs.length > 0">
-    <table class="drug-table">
-      <thead>
+  <div *ngIf="drugs.length > 0" class="table-responsive mt-4">
+    <table class="table table-hover table-striped">
+      <thead class="table-teal text-white">
         <tr>
           <th>Name</th>
           <th>Description</th>
@@ -46,8 +60,12 @@
           <td>{{ drug.price | number: '1.2-2' }}</td>
           <td>{{ drug.categoryName }}</td>
           <td>
-            <button (click)="editDrug(drug)">Edit</button>
-            <button (click)="deleteDrug(drug.drugId)">Delete</button>
+            <button class="btn btn-sm btn-outline-primary me-1" (click)="editDrug(drug)">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger" (click)="deleteDrug(drug.drugId)">
+              <i class="fas fa-trash-alt"></i>
+            </button>
           </td>
         </tr>
       </tbody>

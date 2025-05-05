@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router'; // 👈 import Router
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -11,14 +11,13 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
+  newOrdersCount = 5; // Example - replace with actual data from your service
+
   constructor(private router: Router) {}
 
   logout(): void {
-    // Clear token/localStorage/sessionStorage as per your auth system
-    localStorage.removeItem('token'); // 👈 Remove token
-    localStorage.removeItem('user');  // 👈 Optional if you store user data
-
-    // Redirect to login page
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     this.router.navigate(['/login']);
   }
 }

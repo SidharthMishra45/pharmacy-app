@@ -9,6 +9,12 @@ namespace Pharmacy.API.DTOs
         public Guid InventoryId { get; set; }
 
         [Required]
+        public string Description { get; set; }
+        
+        [Required]
+        public string CategoryName { get; set; } 
+
+        [Required]
         public string DrugName { get; set; }
 
         [Required]

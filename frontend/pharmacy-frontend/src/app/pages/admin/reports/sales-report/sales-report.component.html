@@ -1,72 +1,58 @@
-<div class="sales-report-container">
-    <h2>Sales Report</h2>
-  
-    <div *ngIf="isLoading" class="loading-indicator">
-      <p>Loading...</p>
+<div class="sales-report-container container my-4 p-4 shadow-sm bg-white rounded">
+  <h2 class="text-center mb-4 text-teal">Sales Report</h2>
+
+  <div *ngIf="isLoading" class="text-center mb-4">
+    <div class="spinner-border text-teal" role="status"></div>
+    <p class="mt-2">Loading...</p>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-4">
+      <label for="supplierId" class="form-label">Supplier</label>
+      <select id="supplierId" class="form-select" [(ngModel)]="supplierId" required>
+        <option value="">Select Supplier</option>
+        <option *ngFor="let s of suppliers" [value]="s.userId">{{ s.name }}</option>
+      </select>
     </div>
-  
-    <!-- Filter form -->
-    <div class="filters">
-      <div class="filter-group">
-        <label for="supplierId">Supplier:</label>
-        <select id="supplierId" [(ngModel)]="supplierId" required>
-          <option value="">Select Supplier</option>
-          <option *ngFor="let supplier of suppliers" [value]="supplier?.id?.toString()">{{ supplier?.name || 'Unknown' }}</option>
-        </select>
-      </div>
-  
-      <div class="filter-group">
-        <label for="fromDate">From Date:</label>
-        <input
-          type="date"
-          id="fromDate"
-          [(ngModel)]="fromDate"
-          [min]="minDate"
-        />
-      </div>
-  
-      <div class="filter-group">
-        <label for="toDate">To Date:</label>
-        <input
-          type="date"
-          id="toDate"
-          [(ngModel)]="toDate"
-          [min]="minDate"
-        />
-      </div>
-  
-      <div class="button-group">
-        <button (click)="fetchReport()" [disabled]="isLoading">Fetch Report</button>
-        <button (click)="downloadReport()" [disabled]="isLoading || !salesReport.length">Download PDF</button>
-      </div>
+
+    <div class="col-md-3">
+      <label for="fromDate" class="form-label">From Date</label>
+      <input type="date" id="fromDate" class="form-control" [(ngModel)]="fromDate" [min]="minDate" />
     </div>
-  
-    <!-- Sales report table -->
-    <div *ngIf="salesReport.length > 0" class="report-table">
-      <table>
-        <thead>
-          <tr>
-            <th>Drug Names</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Supplier</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let report of salesReport">
-            <td>{{ report.drugNames?.join(', ') || 'N/A' }}</td>
-            <td>{{ report.quantity }}</td>
-            <td>{{ report.price | currency }}</td>
-            <td>{{ report.supplierName }}</td>
-          </tr>
-        </tbody>
-      </table>
+
+    <div class="col-md-3">
+      <label for="toDate" class="form-label">To Date</label>
+      <input type="date" id="toDate" class="form-control" [(ngModel)]="toDate" [min]="minDate" />
     </div>
-  
-    <!-- No data message -->
-    <div *ngIf="!isLoading && salesReport.length === 0" class="no-data">
-      <p>No sales data available for the selected filters.</p>
+
+    <div class="col-md-2 d-flex align-items-end">
+      <div class="w-100 d-grid gap-2">
+        <button class="btn btn-teal" (click)="fetchReport()" [disabled]="isLoading">Fetch Report</button>
+        <button class="btn btn-outline-secondary" (click)="downloadReport()" [disabled]="isLoading || !salesReport.length">Download PDF</button>
+      </div>
     </div>
   </div>
-  
-  
+
+  <div *ngIf="salesReport.length > 0" class="table-responsive">
+    <table class="table table-bordered table-hover align-middle">
+      <thead class="table-teal text-white">
+        <tr>
+          <th>Date</th>
+          <th>Total Orders</th>
+          <th>Total Revenue</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of salesReport">
+          <td>{{ r.date | date: 'mediumDate' }}</td>
+          <td>{{ r.totalOrders }}</td>
+          <td>{{ r.totalRevenue | currency:'INR':'symbol':'1.2-2' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="!isLoading && salesReport.length === 0" class="alert alert-warning text-center mt-3">
+    No sales data for the selected range.
+  </div>
+</div>

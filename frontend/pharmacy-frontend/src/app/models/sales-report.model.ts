@@ -4,12 +4,25 @@ export interface SalesReportRequestDto {
     toDate: string;
   }
   
-  export interface SalesReportItem {
-    drugNames: string[]; // If the API returns an array of drug names
+  export interface SalesReportResponseDto {
+    date:        string;  // ISO string of Date
+    totalOrders: number;
+    totalRevenue: number;
+  }
+  
+  export interface SupplierSalesReportRequestDto {
+    supplierId: string;
+    fromDate?: string; // ISO string, optional
+    toDate?: string;   // ISO string, optional
+  }
+  
+  export interface SupplierSalesReportItemDto {
+    orderNumber: string;
+    drugName: string;
     quantity: number;
-    price: number;
-    orderDate: string; // or Date
-    supplierName: string;
+    pricePerUnit: number;
+    totalDrugPrice: number;
+    totalOrderPrice: number;
   }
   
   

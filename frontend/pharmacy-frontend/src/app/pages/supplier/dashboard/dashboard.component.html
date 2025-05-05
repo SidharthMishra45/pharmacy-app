@@ -1,19 +1,58 @@
 <div class="supplier-layout">
   <aside class="sidebar">
-    <ul>
-      <li><a [routerLink]="['./inventory']" routerLinkActive="active">Inventory</a></li>
-      <li><a [routerLink]="['./drug-list']" routerLinkActive="active">Drug List</a></li>
-      <li><a [routerLink]="['./new-orders']" routerLinkActive="active">New Orders</a></li>
-      <li><a [routerLink]="['./picked-orders']" routerLinkActive="active">Picked Orders</a></li>
-      <li><a [routerLink]="['./rejected-orders']" routerLinkActive="active">Rejected Orders</a></li>
-
-      <li><a [routerLink]="['./sales-report']" routerLinkActive="active">Sales Report</a></li>
+    <div class="sidebar-header">
+      <h3>MediCare Supplier</h3>
+    </div>
+    <ul class="nav-links">
+      <li>
+        <a [routerLink]="['./inventory']" routerLinkActive="active">
+          <i class="bi bi-box-seam"></i>
+          <span>Inventory</span>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['./drug-list']" routerLinkActive="active">
+          <i class="bi bi-capsule"></i>
+          <span>Drug List</span>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['./new-orders']" routerLinkActive="active">
+          <i class="bi bi-cart"></i>
+          <span>New Orders</span>
+          <span class="badge" *ngIf="newOrdersCount > 0">{{ newOrdersCount }}</span>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['./picked-orders']" routerLinkActive="active">
+          <i class="bi bi-check-circle"></i>
+          <span>Picked Orders</span>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['./rejected-orders']" routerLinkActive="active">
+          <i class="bi bi-x-circle"></i>
+          <span>Rejected Orders</span>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['./sales-report']" routerLinkActive="active">
+          <i class="bi bi-graph-up"></i>
+          <span>Sales Report</span>
+        </a>
+      </li>
     </ul>
-
-    <button (click)="logout()" class="btn-logout">Logout</button> <!-- 👈 New Logout button -->
+    <div class="sidebar-footer">
+      <button (click)="logout()" class="btn-logout">
+        <i class="bi bi-box-arrow-left"></i>
+        <span>Logout</span>
+      </button>
+    </div>
   </aside>
 
   <main class="main-view">
-    <router-outlet></router-outlet>
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
+    </div>
   </main>
 </div>

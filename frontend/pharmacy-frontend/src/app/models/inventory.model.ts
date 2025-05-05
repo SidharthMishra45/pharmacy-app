@@ -1,6 +1,8 @@
 export interface Inventory {
-  inventoryId?: string;
+  inventoryId: string;
   drugName: string;
+  description:string;
+  categoryName:string;
   quantity: number;
   price: number;
   expiryDate: string; // ISO format (e.g., "2025-04-12T00:00:00Z")

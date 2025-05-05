@@ -63,7 +63,7 @@ namespace Pharmacy.API.Controllers
 
         // PUT: api/Order/{orderId}/status
         [HttpPut("{orderId}/status")]
-        [Authorize(Roles = UserRoles.Supplier)]
+        [Authorize(Policy = "CanManageDrugs")]
         public async Task<IActionResult> UpdateOrderStatus(Guid orderId, [FromQuery] string status, [FromQuery] Guid? supplierId = null)
         {
             // Pass supplierId when status is "Accepted"
@@ -83,6 +83,47 @@ namespace Pharmacy.API.Controllers
             return Ok(orders);
         }
 
+
+        // PUT: api/Order/{orderId}/accept
+        [HttpPut("{orderId}/accept")]
+        [Authorize(Roles = UserRoles.Supplier)]
+        public async Task<IActionResult> AcceptOrder(Guid orderId, [FromQuery] Guid? supplierId = null)
+        {
+            var success = await _orderService.AcceptOrderAsync(orderId, supplierId);
+
+            if (!success)
+                return BadRequest("Unable to accept order. Check inventory or order existence.");
+
+            return Ok(new { message = "Order accepted successfully." });
+        }
+
+
+        [HttpPut("{orderId}/reject")]
+        [Authorize(Roles = UserRoles.Supplier)]
+        public async Task<IActionResult> RejectOrder(Guid orderId, [FromQuery] Guid? supplierId = null)
+        {
+            var success = await _orderService.RejectOrderAsync(orderId, supplierId);
+
+            if (!success)
+                return BadRequest("Unable to reject order. Check inventory or order existence.");
+
+            return Ok(new { message = "Order rejected successfully." });
+        }
+
+        // GET: api/order/accepted-by-me
+        [HttpGet("orders/supplier/")]
+        [Authorize(Roles = UserRoles.Supplier)]
+        public async Task<ActionResult<IEnumerable<OrderResponseDto>>> GetMyAcceptedOrders()
+        {
+            var supplierId = GetLoggedInUserId();
+            var orders = await _orderService.GetOrdersByStatusAsync("Accepted");
+
+            var myOrders = orders.Where(o => o.SupplierId == supplierId);
+            return Ok(myOrders);
+        }
+
+
+
         // Utility to extract the logged-in user's Guid ID from JWT token
         private Guid GetLoggedInUserId()
         {
@@ -96,5 +137,20 @@ namespace Pharmacy.API.Controllers
 
             return userId;
         }
+
+        [HttpGet("supplier/{supplierId}/accepted")]
+        public async Task<IActionResult> GetAcceptedOrdersBySupplier(Guid supplierId)
+        {
+            var orders = await _orderService.GetAcceptedOrdersBySupplierAsync(supplierId);
+            return Ok(orders);
+        }
+
+        [HttpGet("supplier/{supplierId}/rejected")]
+        public async Task<IActionResult> GetRejectedOrdersBySupplier(Guid supplierId)
+        {
+            var orders = await _orderService.GetRejectedOrdersBySupplierAsync(supplierId);
+            return Ok(orders);
+        }
+
     }
 }

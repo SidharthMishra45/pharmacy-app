@@ -90,21 +90,88 @@ namespace Pharmacy.API.Services
             return _mapper.Map<IEnumerable<OrderResponseDto>>(orders);
         }
 
-        public async Task<bool> AcceptOrderAsync(Guid orderId, Guid supplierId)
+        public async Task<bool> AcceptOrderAsync(Guid orderId, Guid? supplierId = null)
         {
-            var order = await _context.Orders.FindAsync(orderId);
-            if (order == null)
-                return false;
+            var order = await _context.Orders
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Drug)
+                .FirstOrDefaultAsync(o => o.OrderId == orderId);
 
-            // Assign the supplier when the order is accepted
+                if (order == null)
+                {
+                    Console.WriteLine($"Order not found: {orderId}");
+                    return false;
+                }
+
+                if (order.Status != "Pending")
+                {
+                    Console.WriteLine($"Order is not pending. Status: {order.Status}");
+                    return false;
+                }
+
+            // Check if enough inventory exists for each drug
+            foreach (var item in order.OrderItems)
+            {
+                var inventory = await _context.Inventories.FirstOrDefaultAsync(i =>
+                    i.DrugName.ToLower() == item.Drug.Name.ToLower() &&
+                    i.SupplierId == supplierId);
+
+                if (inventory == null)
+                {
+                    Console.WriteLine($"No inventory found for drug: {item.Drug.Name}, Supplier: {supplierId}");
+                    return false;
+                }
+
+                if (inventory.Quantity < item.Quantity)
+                {
+                    Console.WriteLine($"Insufficient inventory for {item.Drug.Name}. Available: {inventory.Quantity}, Required: {item.Quantity}");
+                    return false;
+                }
+
+                // Deduct inventory quantity
+                inventory.Quantity -= item.Quantity;
+                _context.Inventories.Update(inventory);
+            }
+
+            // Assign the supplier and update order status
             order.SupplierId = supplierId;
-            order.Status = "Accepted";  // Update the status to accepted or any relevant status
+            order.Status = "Accepted";
 
             _context.Orders.Update(order);
             await _context.SaveChangesAsync();
 
             return true;
         }
+
+        public async Task<bool> RejectOrderAsync(Guid orderId, Guid? supplierId = null)
+        {
+            var order = await _context.Orders
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Drug)
+                .FirstOrDefaultAsync(o => o.OrderId == orderId);
+
+                if (order == null)
+                {
+                    Console.WriteLine($"Order not found: {orderId}");
+                    return false;
+                }
+
+                if (order.Status != "Pending")
+                {
+                    Console.WriteLine($"Order is not pending. Status: {order.Status}");
+                    return false;
+                }
+
+            // Assign the supplier and update order status
+            order.SupplierId = supplierId;
+            order.Status = "Rejected";
+
+            _context.Orders.Update(order);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
 
 
         public async Task<bool> UpdateOrderStatusAsync(Guid orderId, string newStatus, Guid? supplierId = null)
@@ -129,6 +196,29 @@ namespace Pharmacy.API.Services
         }
 
 
-        
+        public async Task<IEnumerable<OrderResponseDto>> GetAcceptedOrdersBySupplierAsync(Guid supplierId)
+        {
+            var orders = await _context.Orders
+                .Where(o => o.Status == "Accepted" && o.SupplierId == supplierId)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Drug)
+                .Include(o => o.Doctor)
+                .ToListAsync();
+
+            return _mapper.Map<IEnumerable<OrderResponseDto>>(orders);
+        }
+
+        public async Task<IEnumerable<OrderResponseDto>> GetRejectedOrdersBySupplierAsync(Guid supplierId)
+        {
+            var orders = await _context.Orders
+                .Where(o => o.Status == "Rejected" && o.SupplierId == supplierId)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Drug)
+                .Include(o => o.Doctor)
+                .ToListAsync();
+
+            return _mapper.Map<IEnumerable<OrderResponseDto>>(orders);
+        }
+
     }
 }

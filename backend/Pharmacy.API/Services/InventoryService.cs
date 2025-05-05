@@ -33,6 +33,8 @@ namespace Pharmacy.API.Services
                 DrugName = i.DrugName,
                 Quantity = i.Quantity,
                 Price = i.Price,
+                Description = i.Description,
+                CategoryName = i.CategoryName,
                 ExpiryDate = i.ExpiryDate,
                 SupplierId = i.SupplierId,
                 SupplierName = i.Supplier != null ? i.Supplier.Name : "Unknown"
@@ -60,15 +62,55 @@ namespace Pharmacy.API.Services
 
         public async Task<InventoryReadDto> CreateInventoryAsync(Guid supplierId, InventoryCreateDto dto)
         {
+            string normalizedDrugName = dto.DrugName.Trim().ToLower();
+
+            Drug drug = await _context.Drugs
+                .Include(d => d.Category)
+                .FirstOrDefaultAsync(d => d.Name.ToLower() == normalizedDrugName);
+
+            if (drug == null)
+            {
+                var category = await _context.Categories
+                    .FirstOrDefaultAsync(c => c.CategoryName.ToLower() == dto.CategoryName.ToLower());
+
+                if (category == null)
+                {
+                    category = new Category
+                    {
+                        CategoryId = Guid.NewGuid(),
+                        CategoryName = dto.CategoryName
+                    };
+                    _context.Categories.Add(category);
+                    await _context.SaveChangesAsync();
+                }
+
+                drug = new Drug
+                {
+                    DrugId = Guid.NewGuid(),
+                    Name = dto.DrugName,
+                    Description = dto.Description,
+                    Price = dto.Price,
+                    CategoryId = category.CategoryId
+                };
+
+                _context.Drugs.Add(drug);
+                await _context.SaveChangesAsync();
+            }
+
             var inventory = _mapper.Map<Inventory>(dto);
             inventory.InventoryId = Guid.NewGuid();
             inventory.SupplierId = supplierId;
+            inventory.CategoryName = drug.Category.CategoryName;
+            inventory.Description = drug.Description;
+            inventory.Price = drug.Price;
+            inventory.DrugName = drug.Name;
 
             await _context.Inventories.AddAsync(inventory);
             await _context.SaveChangesAsync();
 
             return _mapper.Map<InventoryReadDto>(inventory);
         }
+
 
         public async Task<bool> UpdateInventoryAsync(Guid supplierId, InventoryUpdateDto dto)
         {
@@ -80,10 +122,23 @@ namespace Pharmacy.API.Services
 
             _mapper.Map(dto, inventory);
             _context.Inventories.Update(inventory);
+
+
+            // Also update the drug
+            var drug = await _context.Drugs.FirstOrDefaultAsync(d => d.Name.ToLower() == inventory.DrugName.ToLower());
+            if (drug != null)
+            {
+                drug.Description = dto.Description;
+                drug.Price = dto.Price;
+                _context.Drugs.Update(drug);
+            }
+
+            _context.Inventories.Update(inventory);
             await _context.SaveChangesAsync();
 
             return true;
         }
+
 
         public async Task<bool> DeleteInventoryAsync(Guid inventoryId, Guid supplierId)
         {

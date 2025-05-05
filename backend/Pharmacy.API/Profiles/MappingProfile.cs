@@ -10,12 +10,15 @@ namespace Pharmacy.API.Profiles
         {
             // Inventory mappings
             CreateMap<Inventory, InventoryReadDto>()
-                .ForMember(dest => dest.SupplierId, opt => opt.MapFrom(src => src.SupplierId));
+                .ForMember(dest => dest.SupplierId, opt => opt.MapFrom(src => src.SupplierId))
+                .ForMember(dest => dest.SupplierName, opt => opt.MapFrom(src => src.Supplier != null ? src.Supplier.Name : "Unknown"));
+
             CreateMap<InventoryCreateDto, Inventory>();
             CreateMap<InventoryUpdateDto, Inventory>();
 
             // Order mappings
             CreateMap<Order, OrderResponseDto>();
+
             CreateMap<OrderItem, OrderItemResponseDto>()
                 .ForMember(dest => dest.DrugName, opt => opt.MapFrom(src => src.Drug.Name))
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Drug.Price));

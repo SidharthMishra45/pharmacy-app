@@ -1,0 +1,82 @@
+// General Styles
+$teal: #008080;
+$teal-light: #4db8b8;
+$teal-dark: #006666;
+$background-light: #f7f7f7;
+$text-dark: #333333;
+$font-family: 'Roboto', sans-serif;
+
+// Body Styling
+body {
+  background-color: $background-light;
+  font-family: $font-family;
+  color: $text-dark;
+}
+
+.container {
+  margin-top: 5rem;
+}
+
+// Card Styling for the Login Form
+.card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+}
+
+.card h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: $teal;
+}
+
+.form-label {
+  font-size: 1rem;
+  color: $teal-dark;
+}
+
+// Input Fields
+.form-control {
+  border-radius: 5px;
+  padding: 1rem;
+  border: 1px solid #ccc;
+}
+
+.form-control-lg {
+  font-size: 1.1rem;
+}
+
+.form-control:focus {
+  border-color: $teal;
+  box-shadow: 0 0 5px $teal;
+}
+
+// Submit Button
+.btn-teal {
+  background-color: $teal;
+  color: white;
+  font-weight: 600;
+  padding: 1rem;
+  border-radius: 5px;
+  border: none;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: $teal-dark;
+  }
+}
+
+// Register Link
+.text-teal {
+  color: $teal;
+}
+
+.text-teal:hover {
+  text-decoration: underline;
+}
+
+// Footer styling
+app-footer {
+  margin-top: 5rem;
+}

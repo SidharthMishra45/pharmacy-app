@@ -12,7 +12,7 @@ using Pharmacy.API.Data;
 namespace Pharmacy.API.Migrations
 {
     [DbContext(typeof(PharmacyDbContext))]
-    [Migration("20250430161333_InitialCreate")]
+    [Migration("20250503191127_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -278,6 +278,14 @@ namespace Pharmacy.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("DrugName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -317,7 +325,7 @@ namespace Pharmacy.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("SupplierId")
+                    b.Property<Guid?>("SupplierId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("TotalAmount")
@@ -470,8 +478,7 @@ namespace Pharmacy.API.Migrations
                     b.HasOne("Pharmacy.API.Models.ApplicationUser", "Supplier")
                         .WithMany("Orders")
                         .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Pharmacy.API.Models.TransactionDetail", "TransactionDetail")
                         .WithMany()

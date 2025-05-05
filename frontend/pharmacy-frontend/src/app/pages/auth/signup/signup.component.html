@@ -1,52 +1,52 @@
-<header class="bg-primary text-white p-3">
-  <div class="container d-flex justify-content-between align-items-center">
-    <h1 class="h3 mb-0">Sign Up</h1>
-    <button class="btn btn-light" (click)="navigateHome()">🏠 Back to Home</button>
+<header class="navbar navbar-expand-lg bg-teal text-white px-3 py-2">
+  <div class="container-fluid d-flex justify-content-between align-items-center">
+    <span class="navbar-brand text-white mb-0 h6">Sign Up</span>
+    <button class="btn btn-light btn-sm" (click)="navigateHome()">🏠 Back to Home</button>
   </div>
 </header>
 
+
 <main class="container my-5">
-  <section class="card p-4 shadow-sm mx-auto" style="max-width: 500px;">
-    <h2 class="mb-4 text-center">Create an Account</h2>
-    
+  <section class="card p-4 shadow-sm mx-auto" style="max-width: 500px; border-radius: 10px;">
+    <h2 class="mb-4 text-center text-teal">Create an Account</h2>
+
     <form (submit)="onSignup()">
       <div class="mb-3">
-        <label for="name" class="form-label">Full Name</label>
-        <input type="text" id="name" name="name" [(ngModel)]="name" required class="form-control" />
+        <label for="name" class="form-label text-teal">Full Name</label>
+        <input type="text" id="name" name="name" [(ngModel)]="name" required class="form-control form-control-lg" />
       </div>
 
       <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" id="email" name="email" [(ngModel)]="email" required class="form-control" />
+        <label for="email" class="form-label text-teal">Email</label>
+        <input type="email" id="email" name="email" [(ngModel)]="email" required class="form-control form-control-lg" />
       </div>
 
       <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
-        <input type="password" id="password" name="password" [(ngModel)]="password" required class="form-control" />
+        <label for="password" class="form-label text-teal">Password</label>
+        <input type="password" id="password" name="password" [(ngModel)]="password" required class="form-control form-control-lg" />
       </div>
 
       <div class="mb-3">
-        <label for="ConfirmPassword" class="form-label">Confirm Password</label>
-        <input type="password" id="ConfirmPassword" name="ConfirmPassword" [(ngModel)]="ConfirmPassword" required class="form-control" />
+        <label for="ConfirmPassword" class="form-label text-teal">Confirm Password</label>
+        <input type="password" id="ConfirmPassword" name="ConfirmPassword" [(ngModel)]="ConfirmPassword" required class="form-control form-control-lg" />
       </div>
 
       <div class="mb-4">
-        <label for="role" class="form-label">Role</label>
-        <select id="role" name="role" [(ngModel)]="role" required class="form-select">
+        <label for="role" class="form-label text-teal">Role</label>
+        <select id="role" name="role" [(ngModel)]="role" required class="form-select form-select-lg">
           <option value="" disabled selected>Select role</option>
           <option value="Doctor">Doctor</option>
           <option value="Supplier">Supplier</option>
           <option value="Admin">Admin</option>
-
         </select>
       </div>
 
-      <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+      <button type="submit" class="btn btn-teal w-100">Sign Up</button>
     </form>
 
     <p class="text-center mt-3">
       Already have an account? 
-      <a routerLink="/login" class="text-decoration-none">Login here</a>
+      <a routerLink="/login" class="text-decoration-none text-teal">Login here</a>
     </p>
   </section>
 </main>

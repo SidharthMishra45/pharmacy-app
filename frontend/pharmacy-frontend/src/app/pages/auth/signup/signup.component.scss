@@ -1,0 +1,168 @@
+// General Styles
+$teal: #008080;
+$teal-light: #4db8b8;
+$teal-dark: #006666;
+$background-light: #f7f7f7;
+$text-dark: #333333;
+$font-family: 'Roboto', sans-serif;
+
+// Body Styling
+body {
+  background-color: $background-light;
+  font-family: $font-family;
+  color: $text-dark;
+}
+
+.container {
+  margin-top: 5rem;
+}
+
+// Header Styling
+header {
+    .bg-teal {
+        background-color: #008080 !important; // Bootstrap teal-like
+      }
+      
+      .navbar-brand {
+        font-weight: 500;
+        font-size: 1rem;
+      }
+      
+      .btn-light {
+        color: #008080;
+        background-color: #fff;
+        font-size: 0.85rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 3px;
+      
+        &:hover {
+          background-color: #007373;
+          color: #fff;
+        }
+      }
+      
+    background-color: teal;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+
+  h1 {
+    font-size: 1.5rem; // slightly smaller heading
+    margin: 0;
+  }
+
+  .btn-light {
+    background-color: white;
+    color: $teal;
+    font-weight: 600;
+    padding: 0.4rem 0.5rem;
+    font-size: 0.95rem;
+    border-radius: 4px;
+
+    &:hover {
+      background-color: $teal-light;
+      color: white;
+    }
+  }
+}
+
+
+
+header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+header .btn-light {
+  background-color: white;
+  color: $teal;
+  border-radius: 5px;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: $teal-light;
+    color: white;
+  }
+}
+
+// Card Styling for the Sign Up Form
+.card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+}
+
+.card h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: $teal;
+}
+
+.form-label {
+  font-size: 1rem;
+  color: $teal-dark;
+}
+
+// Input Fields
+.form-control {
+  border-radius: 5px;
+  padding: 1rem;
+  border: 1px solid #ccc;
+}
+
+.form-control-lg {
+  font-size: 1.1rem;
+}
+
+.form-control:focus {
+  border-color: $teal;
+  box-shadow: 0 0 5px $teal;
+}
+
+// Select Field
+.form-select {
+  border-radius: 5px;
+  font-size: 1.1rem;
+}
+
+.form-select:focus {
+  border-color: $teal;
+  box-shadow: 0 0 5px $teal;
+}
+
+// Submit Button
+.btn-teal {
+  background-color: $teal;
+  color: white;
+  font-weight: 600;
+  padding: 1rem;
+  border-radius: 5px;
+  border: none;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: $teal-dark;
+  }
+}
+
+// Register Link
+.text-teal {
+  color: $teal;
+}
+
+.text-teal:hover {
+  text-decoration: underline;
+}
+
+// Footer styling
+app-footer {
+  margin-top: 5rem;
+}

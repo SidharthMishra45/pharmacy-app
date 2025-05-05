@@ -1,15 +1,37 @@
-<div class="orders-container">
-    <h2>Picked Orders</h2>
-    <div *ngIf="pickedOrders.length === 0">No picked orders yet.</div>
-  
-    <div *ngFor="let order of pickedOrders" class="order-card">
-      <h4>Order #{{ order.orderId }}</h4>
-      <p>Total: ${{ order.totalAmount }}</p>
-      <ul>
-        <li *ngFor="let item of order.items">
-          {{ item.drugName }} - Qty: {{ item.quantity }} - Price: ${{ item.price }}
-        </li>
-      </ul>
+<div class="container py-4 picked-orders-container">
+  <h2 class="text-center teal-text mb-4">Picked Orders</h2>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="d-flex justify-content-center py-5">
+    <div class="spinner-border text-info" role="status">
+      <span class="visually-hidden">Loading...</span>
     </div>
   </div>
-  
+
+  <!-- Order Cards -->
+  <div *ngIf="!isLoading && pickedOrders.length > 0" class="row g-4">
+    <div class="col-md-6 col-lg-4" *ngFor="let order of pickedOrders">
+      <div class="card order-card shadow-lg">
+        <div class="card-body">
+          <h5 class="card-title">Order #{{ order.orderId?.slice(0, 8) }}</h5>
+          <div class="card-text">
+            <strong>Date:</strong> {{ order.orderDate | date: 'mediumDate' }}<br />
+            <strong>Items:</strong>
+            <ul class="ps-3 mb-2">
+              <li *ngFor="let item of order.items">
+                {{ item.drugName }} × {{ item.quantity }}
+              </li>
+            </ul>
+            <strong>Total:</strong> ₹{{ order.totalAmount.toFixed(2) }}
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Orders Message -->
+  <div *ngIf="!isLoading && pickedOrders.length === 0" class="text-center text-muted mt-5">
+    No picked orders found.
+  </div>
+</div>

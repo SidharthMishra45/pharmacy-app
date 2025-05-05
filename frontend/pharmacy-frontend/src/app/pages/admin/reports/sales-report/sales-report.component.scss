@@ -1,0 +1,49 @@
+.text-teal {
+    color: #008080 !important;
+  }
+  
+  .btn-teal {
+    background-color: #008080;
+    color: white;
+    border: none;
+  
+    &:hover {
+      background-color: #006666;
+    }
+  
+    &:disabled {
+      background-color: #b2d8d8;
+    }
+  }
+  
+  .table-teal {
+    background-color: #008080;
+  }
+  
+  .sales-report-container {
+    background-color: #ffffff;
+    border-radius: 10px;
+  
+    h2 {
+      font-weight: 600;
+    }
+  
+    .form-label {
+      font-weight: 500;
+    }
+  
+    .form-select,
+    .form-control {
+      border-radius: 5px;
+    }
+  
+    .btn {
+      font-weight: 500;
+    }
+  
+    table {
+      border-radius: 8px;
+      overflow: hidden;
+    }
+  }
+  

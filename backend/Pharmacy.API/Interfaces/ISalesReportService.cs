@@ -6,6 +6,7 @@ namespace Pharmacy.API.Interfaces
 {
     public interface ISalesReportService
     {
+        Task<IEnumerable<SupplierSalesReportDto>> GetSupplierSalesReportAsync(SupplierSalesReportRequestDto requestDto);
         Task<IEnumerable<SalesReportResponseDto>> GetSalesReportAsync(SalesReportRequestDto requestDto);
     }
 }

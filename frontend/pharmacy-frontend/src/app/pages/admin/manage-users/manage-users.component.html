@@ -1,54 +1,64 @@
-<div class="manage-users-container">
-    <h2>Manage Users</h2>
-  
+<div class="manage-users-container container my-5">
+  <div class="card shadow-sm p-4">
+    <h2 class="text-center text-teal mb-4">Manage Users</h2>
+
     <!-- User Form -->
-    <div *ngIf="showForm" class="user-form">
-      <h3>{{ editMode ? 'Edit User' : 'Add New User' }}</h3>
-      <form (ngSubmit)="addOrUpdateUser()">
-        <div class="form-group">
-          <label for="userName">Name:</label>
-          <input id="userName" [(ngModel)]="newUser.name" name="name" required />
-        </div>
-        <div class="form-group">
-          <label for="userEmail">Email:</label>
-          <input id="userEmail" [(ngModel)]="newUser.email" name="email" required />
-        </div>
-        <div class="form-group">
-          <label for="userRole">Role:</label>
-          <select id="userRole" [(ngModel)]="newUser.role" name="role" required>
-            <option value="Doctor">Doctor</option>
-            <option value="Supplier">Supplier</option>
-          </select>
-        </div>
-        <button type="submit" class="btn btn-primary">{{ editMode ? 'Update' : 'Add' }} User</button>
-        <button type="button" class="btn btn-secondary" (click)="resetForm()">Cancel</button>
-      </form>
+    <div *ngIf="showForm" class="mb-4">
+      <div class="card bg-light border-0 p-3">
+        <h4 class="mb-3 text-teal">{{ editMode ? 'Edit User' : 'Add New User' }}</h4>
+        <form (ngSubmit)="addOrUpdateUser()" class="row g-3">
+          <div class="col-md-4">
+            <label for="userName" class="form-label">Name:</label>
+            <input id="userName" [(ngModel)]="newUser.name" name="name" required class="form-control" />
+          </div>
+          <div class="col-md-4">
+            <label for="userEmail" class="form-label">Email:</label>
+            <input id="userEmail" [(ngModel)]="newUser.email" name="email" required type="email" class="form-control" />
+          </div>
+          <div class="col-md-4">
+            <label for="userRole" class="form-label">Role:</label>
+            <select id="userRole" [(ngModel)]="newUser.role" name="role" required class="form-select">
+              <option value="Doctor">Doctor</option>
+              <option value="Supplier">Supplier</option>
+            </select>
+          </div>
+
+          <div class="col-12 text-end">
+            <button type="submit" class="btn btn-teal me-2">
+              {{ editMode ? 'Update' : 'Add' }} User
+            </button>
+            <button type="button" class="btn btn-outline-secondary" (click)="resetForm()">Cancel</button>
+          </div>
+        </form>
+      </div>
     </div>
-  
+
     <!-- User List -->
-    <div class="user-list">
-      <h3>Users</h3>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of users">
-            <td>{{ user.name }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.role }}</td>
-            <td>
-              <button class="btn btn-warning" (click)="editUser(user)">Edit</button>
-              <button class="btn btn-danger" (click)="deleteUser(user.userId)">Delete</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div>
+      <h4 class="text-teal mb-3">Users</h4>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+          <thead class="table-teal text-white">
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users">
+              <td>{{ user.name }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.role }}</td>
+              <td class="text-center">
+                <button class="btn btn-sm btn-warning me-2" (click)="editUser(user)">Edit</button>
+                <button class="btn btn-sm btn-danger" (click)="deleteUser(user.userId)">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-  
+</div>

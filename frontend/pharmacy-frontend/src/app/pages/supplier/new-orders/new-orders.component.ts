@@ -90,15 +90,31 @@ export class NewOrdersComponent implements OnInit {
       alert('Unable to accept order: Supplier ID not found.');
       return;
     }
-
-    this.orderService.updateOrderStatus(orderId, 'Accepted', this.supplierId).subscribe(() => {
-      this.fetchNewOrders();
+  
+    this.orderService.acceptOrder(orderId, this.supplierId).subscribe({
+      next: () => {
+        this.fetchNewOrders();
+      },
+      error: () => {
+        alert('Failed to accept the order.');
+      }
     });
   }
+  
 
   rejectOrder(orderId: string): void {
-    this.orderService.updateOrderStatus(orderId, 'Rejected').subscribe(() => {
-      this.fetchNewOrders();
+    if (!this.supplierId) {
+      alert('Unable to reject order: Supplier ID not found.');
+      return;
+    }
+  
+    this.orderService.rejectOrder(orderId, this.supplierId).subscribe({
+      next: () => {
+        this.fetchNewOrders();
+      },
+      error: () => {
+        alert('Failed to reject the order.');
+      }
     });
   }
 }

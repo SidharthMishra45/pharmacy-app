@@ -2,28 +2,26 @@
 
 <main class="container my-5">
   <section class="card p-4 shadow-sm mx-auto" style="max-width: 500px;">
-    <h2 class="mb-4 text-center">Login</h2>
+    <h2 class="mb-4 text-center text-teal">Login</h2>
 
     <form (submit)="onLogin()">
       <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" id="email" name="email" [(ngModel)]="email" required class="form-control" />
+        <label for="email" class="form-label text-teal">Email</label>
+        <input type="email" id="email" name="email" [(ngModel)]="email" required class="form-control form-control-lg" />
       </div>
 
       <div class="mb-4">
-        <label for="password" class="form-label">Password</label>
-        <input type="password" id="password" name="password" [(ngModel)]="password" required class="form-control" />
+        <label for="password" class="form-label text-teal">Password</label>
+        <input type="password" id="password" name="password" [(ngModel)]="password" required class="form-control form-control-lg" />
       </div>
 
-      <button type="submit" class="btn btn-primary w-100">Login</button>
+      <button type="submit" class="btn btn-teal w-100">Login</button>
     </form>
 
     <p class="text-center mt-3">
       Don't have an account?
-      <span (click)="navigateToSignup()" class="text-decoration-none text-primary" style="cursor: pointer;">Register here</span>
+      <span (click)="navigateToSignup()" class="text-decoration-none text-teal" style="cursor: pointer;">Register here</span>
     </p>
-    
-    
   </section>
 </main>
 

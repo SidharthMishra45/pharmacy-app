@@ -18,24 +18,32 @@ namespace Pharmacy.API.Controllers
             _salesReportService = salesReportService;
         }
 
-        // GET: api/SalesReport?supplierId={}&fromDate={}&toDate={}
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetSalesReport([FromQuery] SalesReportRequestDto requestDto)
+        // POST: api/SalesReport/get-supplier-sales-report
+        [HttpPost("get-supplier-sales-report")]
+        [Authorize(Roles = "Supplier")]
+        public async Task<IActionResult> GetSupplierSalesReport([FromBody] SupplierSalesReportRequestDto req)
         {
-            try
-            {
-                Console.WriteLine($"[GET /salesreport] SupplierId={requestDto.SupplierId}, FromDate={requestDto.FromDate}, ToDate={requestDto.ToDate}");
+            Console.WriteLine(
+                $"[POST] SUPPLIER REPORT: SupplierId={req.SupplierId}, From={req.FromDate}, To={req.ToDate}"
+            );
 
-                var report = await _salesReportService.GetSalesReportAsync(requestDto);
-                return Ok(report);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[ERROR] Failed to get sales report: {ex.Message}");
+            var report = await _salesReportService.GetSupplierSalesReportAsync(req);
+            return Ok(report);
+        }
 
-                return BadRequest(new { message = "Failed to generate sales report.", error = ex.Message });
-            }
+
+
+        // POST: api/SalesReport?supplierId={}&fromDate={}&toDate={}
+        [HttpPost("get-sales-report")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetSalesReport([FromBody] SalesReportRequestDto req)
+        {
+            Console.WriteLine(
+               $"[POST] SupplierId={req.SupplierId}, From={req.FromDate}, To={req.ToDate}"
+            );
+
+            var data = await _salesReportService.GetSalesReportAsync(req);
+            return Ok(data);
         }
     }
 }

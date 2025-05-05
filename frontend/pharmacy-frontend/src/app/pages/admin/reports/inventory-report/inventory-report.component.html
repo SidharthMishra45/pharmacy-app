@@ -1,32 +1,42 @@
-<div class="inventory-report-container">
-    <h2 class="text-center mb-4">Inventory Report</h2>
-  
-    <div *ngIf="isLoading" class="text-center">Loading...</div>
-    <div *ngIf="error" class="text-danger text-center">{{ error }}</div>
-  
-    <table *ngIf="!isLoading && inventoryList.length" class="table table-bordered table-striped">
-      <thead>
-        <tr>
-          <th>Drug Name</th>
-          <th>Quantity</th>
-          <th>Price (₹)</th>
-          <th>Expiry Date</th>
-          <th>Supplier Name</th>
-          <th>Supplier ID</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of inventoryList">
-          <td>{{ item.drugName }}</td>
-          <td>{{ item.quantity }}</td>
-          <td>{{ item.price | number: '1.2-2' }}</td>
-          <td>{{ item.expiryDate | date }}</td>
-          <td>{{ item.supplierName }}</td>
-          <td>{{ item.supplierId }}</td>
-        </tr>
-      </tbody>
-    </table>
-  
-    <div *ngIf="!isLoading && !inventoryList.length" class="text-center">No inventory records found.</div>
+<div class="inventory-report-container container my-5">
+  <div class="card shadow-sm p-4">
+    <h2 class="text-center text-teal mb-4">Inventory Report</h2>
+
+    <div *ngIf="isLoading" class="text-center text-muted">
+      <div class="spinner-border text-teal" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <div *ngIf="error" class="alert alert-danger text-center">{{ error }}</div>
+
+    <div *ngIf="!isLoading && inventoryList.length > 0" class="table-responsive">
+      <table class="table table-hover table-bordered align-middle">
+        <thead class="table-teal text-white">
+          <tr>
+            <th>Drug Name</th>
+            <th>Quantity</th>
+            <th>Price (₹)</th>
+            <th>Expiry Date</th>
+            <th>Supplier Name</th>
+            <th>Supplier ID</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of inventoryList">
+            <td>{{ item.drugName }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.price | number: '1.2-2' }}</td>
+            <td>{{ item.expiryDate | date: 'mediumDate' }}</td>
+            <td>{{ item.supplierName }}</td>
+            <td>{{ item.supplierId }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="!isLoading && inventoryList.length === 0" class="text-center text-muted">
+      No inventory records found.
+    </div>
   </div>
-  
+</div>

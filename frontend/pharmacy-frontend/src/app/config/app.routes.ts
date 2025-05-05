@@ -122,7 +122,7 @@ export const routes: Routes = [
       {
         path: 'sales-report',
         loadComponent: () =>
-          import('../pages/supplier/sales-report/sales-report.component').then((m) => m.SalesReportComponent),
+          import('../pages/supplier/supplier-sales-report/supplier-sales-report.component').then((m) => m.SupplierSalesReportComponent),
       },
       
     ],

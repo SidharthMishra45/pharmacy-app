@@ -1,15 +1,38 @@
-<div class="orders-container">
-    <h2>Rejected Orders</h2>
-    <div *ngIf="rejectedOrders.length === 0">No rejected orders yet.</div>
-  
-    <div *ngFor="let order of rejectedOrders" class="order-card">
-      <h4>Order #{{ order.orderId }}</h4>
-      <p>Total: ${{ order.totalAmount }}</p>
-      <ul>
-        <li *ngFor="let item of order.items">
-          {{ item.drugName }} - Qty: {{ item.quantity }} - Price: ${{ item.price }}
-        </li>
-      </ul>
+<div class="container py-4 rejected-orders-container">
+  <h2 class="text-center text-danger mb-4">Rejected Orders</h2>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="d-flex justify-content-center py-5">
+    <div class="spinner-border text-danger" role="status">
+      <span class="visually-hidden">Loading...</span>
     </div>
   </div>
-  
+
+  <!-- Order Cards -->
+  <div *ngIf="!isLoading && rejectedOrders.length > 0" class="row g-4">
+    <div class="col-md-6 col-lg-4" *ngFor="let order of rejectedOrders">
+      <div class="card order-card shadow-sm border-danger">
+        <div class="card-body">
+          <h5 class="card-title text-danger">Order #{{ order.orderId?.slice(0, 8) }}</h5>
+          <div class="card-text">
+            <strong>Date:</strong> {{ order.orderDate | date: 'mediumDate' }}<br />
+            <strong>Items:</strong>
+            <ul class="ps-3 mb-2">
+              <li *ngFor="let item of order.items">
+                {{ item.drugName }} × {{ item.quantity }}
+              </li>
+            </ul>
+            <strong>Total:</strong> ₹{{ order.totalAmount.toFixed(2) }}
+          </div>
+          
+          <div class="text-muted small fst-italic">This order was rejected.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Orders Message -->
+  <div *ngIf="!isLoading && rejectedOrders.length === 0" class="text-center text-muted mt-5">
+    No rejected orders found.
+  </div>
+</div>

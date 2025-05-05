@@ -21,6 +21,41 @@ namespace Pharmacy.API.Services
             _mapper = mapper;
         }
 
+        public async Task<IEnumerable<SupplierSalesReportDto>> GetSupplierSalesReportAsync(SupplierSalesReportRequestDto requestDto)
+        {
+            var query = _context.Orders
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Drug)
+                .Where(o => o.Status == "Accepted" && o.SupplierId == requestDto.SupplierId)
+                .AsQueryable();
+
+            if (requestDto.FromDate.HasValue)
+            {
+                query = query.Where(o => o.OrderDate >= requestDto.FromDate.Value);
+            }
+
+            if (requestDto.ToDate.HasValue)
+            {
+                query = query.Where(o => o.OrderDate <= requestDto.ToDate.Value);
+            }
+
+            var orders = await query.ToListAsync();
+
+            var reportItems = orders.SelectMany(order =>
+                order.OrderItems.Select(item => new SupplierSalesReportDto
+                {
+                    OrderId = order.OrderId.ToString(),
+                    DrugName = item.Drug.Name,
+                    Quantity = item.Quantity,
+                    PricePerUnit = item.Drug.Price,
+                    TotalDrugPrice = item.Quantity * item.Drug.Price,
+                    TotalOrderPrice = order.OrderItems.Sum(oi => oi.Quantity * oi.Drug.Price)
+                })).ToList();
+
+            return reportItems;
+        }
+
+
         public async Task<IEnumerable<SalesReportResponseDto>> GetSalesReportAsync(SalesReportRequestDto requestDto)
         {
             var query = _context.Orders

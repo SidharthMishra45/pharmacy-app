@@ -12,6 +12,10 @@ namespace Pharmacy.API.Models
         [Required]
         public string DrugName { get; set; }
 
+        public string Description { get; set; }
+
+        public string CategoryName { get; set; } 
+
         [Required]
         public int Quantity { get; set; }
 

@@ -1,0 +1,43 @@
+.rejected-orders-container {
+    animation: fadeInDown 0.6s ease-in-out;
+  }
+  
+  .order-card {
+    border-radius: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: #fff;
+  
+    &:hover {
+      transform: translateY(-6px) scale(1.015);
+      box-shadow: 0 10px 25px rgba(220, 53, 69, 0.2); // Red shadow
+    }
+  
+    .card-title {
+      font-weight: 600;
+    }
+  
+    .card-text {
+      font-size: 0.95rem;
+      color: #333;
+    }
+  
+    ul {
+      padding-left: 1rem;
+      margin: 0;
+      li {
+        font-size: 0.9rem;
+      }
+    }
+  }
+  
+  @keyframes fadeInDown {
+    0% {
+      opacity: 0;
+      transform: translateY(-25px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

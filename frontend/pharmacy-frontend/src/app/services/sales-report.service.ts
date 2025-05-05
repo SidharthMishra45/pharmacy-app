@@ -1,8 +1,14 @@
+// File: src/app/services/sales-report.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { appConfig } from '../config/app.config';
-import { SalesReportItem, SalesReportRequestDto } from '../models/sales-report.model';
+import {
+  SalesReportRequestDto,
+  SalesReportResponseDto,
+  SupplierSalesReportRequestDto,
+  SupplierSalesReportItemDto
+} from '../models/sales-report.model';
 
 @Injectable({ providedIn: 'root' })
 export class SalesReportService {
@@ -10,21 +16,21 @@ export class SalesReportService {
 
   constructor(private http: HttpClient) {}
 
-  getReport(request: SalesReportRequestDto): Observable<SalesReportItem[]> {
-    let params = new HttpParams()
-    if (request.supplierId && request.supplierId !== 'undefined') {
-      params = params.set('supplierId', request.supplierId);
-    }
-  
-    if (request.fromDate) {
-      params = params.set('fromDate', request.fromDate);
-    }
-  
-    if (request.toDate) {
-      params = params.set('toDate', request.toDate);
-    }
-    console.log('Sending sales report request:', request);
+  getReport(request: SalesReportRequestDto): Observable<SalesReportResponseDto[]> {
+    console.log('Sending report request:', request);
+    return this.http.post<SalesReportResponseDto[]>(
+      `${this.apiUrl}/get-sales-report`,
+      request
+    );
+  }
 
-    return this.http.get<SalesReportItem[]>(this.apiUrl, { params });
+  getSupplierSalesReport(
+    request: SupplierSalesReportRequestDto
+  ): Observable<SupplierSalesReportItemDto[]> {
+    console.log('Sending supplier report request:', request);
+    return this.http.post<SupplierSalesReportItemDto[]>(
+      `${this.apiUrl}/get-supplier-sales-report`,
+      request
+    );
   }
 }
